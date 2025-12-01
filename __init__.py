@@ -9,7 +9,7 @@ root.geometry("250x200")
 def click():
     window = Tk()
     window.title("Новое окно")
-    window.geometry("250x200")
+    window.geometry("400x250")
 
 
 button = ttk.Button(text="Создать окно", command=click)
