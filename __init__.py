@@ -71,6 +71,9 @@ menu.add_command(label='exit', command=lambda: window.destroy())
 window.option_add("*tearOff", FALSE)
 window.config(menu=menu)
 
+#
+#
+#
 
 
 def update_time():
