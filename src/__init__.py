@@ -1,9 +1,16 @@
+import os
 from tkinter import *
 from tkinter import Menu
 from tkinter import messagebox
 import tkinter as tk
 import time
 import subprocess
+from tkinter import simpledialog
+
+import datetime
+import sys
+import psutil
+
 
 
 window = Tk()  
@@ -24,7 +31,8 @@ def exec_xfe():
     subprocess.Popen('/usr/bin/xfe')
 
 def exec_run():
-    subprocess.Popen('/usr/bin/xfe')
+    cmd = simpledialog.askstring("Enter cmd", "Enter CMD:")
+    subprocess.Popen(cmd)
 
 def exec_term():
     subprocess.Popen('/usr/bin/lxterminal')
@@ -38,19 +46,37 @@ def ded():
 def exec_ktimer():
     subprocess.Popen('/usr/bin/ktimer')
 
+def exec_poweroff():
+    subprocess.Popen('/usr/bin/sudo', '/usr/sbin/shutdown')
+
 window.option_add("*tearOff", FALSE)
 
-photo_mail = PhotoImage(file =r"../data/mail.png")
-photo_web = PhotoImage(file =r"../data/web.png")
-photo_doc = PhotoImage(file =r"../data/doc.png")
-photo_xfe = PhotoImage(file =r"../data/xfe.png")
-photo_calc = PhotoImage(file =r"../data/calc.png")
-photo_dev = PhotoImage(file =r"../data/dev.png")
-photo_run = PhotoImage(file =r"../data/run.png")
-photo_ded = PhotoImage(file =r"../data/ded.png")
-photo_ai = PhotoImage(file =r"../data/ai.png")
-photo_exit = PhotoImage(file =r"../data/exit.png")
-photo_ktimer = PhotoImage(file =r"../data/ktimer.png")
+#"""Возвращает абсолютный нормализованный путь к картинке в папке data"""
+def get_image_path(filename):
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    path = os.path.join(base_dir, "..", "data", filename)
+    return os.path.normpath(path)
+
+# Получаем директорию, где лежит текущий файл (__init__.py)
+base_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Строим абсолютный путь к картинке
+image_path = os.path.join(base_dir, "..", "data", "mail.gif")
+image_path = os.path.normpath(image_path)  # убирает лишние точки, делает путь чистым
+
+#photo_mail = PhotoImage(file =r"../data/mail.gif")
+photo_mail = PhotoImage(file =image_path)
+photo_web = PhotoImage(file =r"../data/web.gif")
+photo_doc = PhotoImage(file =r"../data/doc.gif")
+photo_xfe = PhotoImage(file =r"../data/xfe.gif")
+photo_calc = PhotoImage(file =r"../data/calc.gif")
+photo_dev = PhotoImage(file =r"../data/dev.gif")
+photo_run = PhotoImage(file =r"../data/run.gif")
+photo_ded = PhotoImage(file =r"../data/ded.gif")
+photo_ai = PhotoImage(file =r"../data/ai.gif")
+photo_exit = PhotoImage(file =r"../data/exit.gif")
+photo_ktimer = PhotoImage(file =r"../data/ktimer.gif")
+photo_poweroff = PhotoImage(file =r"../data/poweroff.gif")
 
 menu = Menu(window)
 
@@ -115,19 +141,19 @@ item_5.add_command(label="Easy Diffusion", command=clicked)
 #item_5.add_command(label='DED', command=ded)
 #menu.add_command(label='DED', command=ded)
 menu.add_cascade(label='AI', menu=item_5, image = photo_ai, compound=TOP)
+
 item_6 = Menu(menu)
 #item_6.add_command(label='exit', command=clicked)
 menu.add_command(label='exit', command=lambda: window.destroy(), image = photo_exit, compound=TOP)
 item_7 = Menu(menu)
 #item_7.add_command(label='exit', command=clicked)
 menu.add_command(label='ktimer', command=exec_ktimer, image = photo_ktimer, compound=TOP)
+item_8 = Menu(menu)
+#item_8.add_command(label='exit', command=clicked)
+menu.add_command(label='poweroff', command=exec_poweroff, image = photo_poweroff, compound=TOP)
 
 window.option_add("*tearOff", FALSE)
 window.config(menu=menu)
-
-#
-#
-#
 
 def update_time():
     current_time = time.strftime('%A, %d.%m.%Y, %H:%M')
@@ -138,5 +164,8 @@ statusbar = tk.Label(window, text="", bd=1, relief=tk.SUNKEN, anchor=tk.W)
 statusbar.pack(side=tk.BOTTOM, fill=tk.X)
 
 update_time()
+
+
+
 
 window.mainloop()
