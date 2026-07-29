@@ -1,158 +1,118 @@
 import os
-import time
+import sys
 import subprocess
-import tkinter as tk
-from tkinter import Menu, messagebox, simpledialog, PhotoImage
+from PyQt6.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QLabel
+from PyQt6.QtGui import QIcon
+from PyQt6.QtCore import Qt
 
-class MainWindow(tk.Tk):
+from .widgets.top_bar import TopBar
+from .widgets.status_bar import StatusBar
+from .widgets.panels import SplitterLayout, ChatPanel, BrowserPanel
+
+
+def get_resource_path(relative_path: str) -> str:
+    if hasattr(sys, "_MEIPASS"):
+        base_path = sys._MEIPASS
+    else:
+        base_path = os.path.dirname(os.path.abspath(__file__))
+        base_path = os.path.join(base_path, "..", "..")
+    return os.path.normpath(os.path.join(base_path, relative_path))
+
+
+class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.title("STARTXPY")
-        # Раскомментируй строку ниже, если нужен полный экран. 
-        # Для отладки лучше сначала запустить без него, чтобы видеть ошибки.
-        self.attributes("-fullscreen", True) 
-        #self.geometry("800x600")  # Размер для отладки, потом можно убрать
-        
-        self.option_add("*tearOff", False)
+        self.setWindowTitle("StartXPy")
+        self.resize(1200, 800)
 
-        # --- НАДЁЖНЫЙ РАСЧЁТ ПУТИ К ИКОНКАМ ---
-        # Мы находимся в: ~/yadi/DEVEL/startxpy/src/startxpy/main_window.py
-        # Нам надо попасть в: ~/yadi/DEVEL/startxpy/data/icons
-        current_file = os.path.abspath(__file__)
-        base_dir = os.path.dirname(current_file)           # .../src/startxpy
-        project_root = os.path.dirname(os.path.dirname(base_dir))  # .../startxpy (корень проекта)
-        data_path = os.path.join(project_root, "data", "icons")
-        
-        #print(f"[DEBUG] Ищем иконки в: {data_path}") # Это поможет увидеть в терминале, куда смотрит скрипт
+        icon_path = get_resource_path("data/icons/mail.gif")
+        if os.path.isfile(icon_path):
+            self.setWindowIcon(QIcon(icon_path))
 
-        def get_image_path(filename):
-            return os.path.join(data_path, filename)
+        central = QWidget()
+        self.setCentralWidget(central)
+        main_layout = QVBoxLayout(central)
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.setSpacing(0)
 
-        # --- ЗАГРУЗКА ИКОНОК ---
-        self.images = {}
-        icons_list = [
-            ("ai", "ai.gif"), ("calc", "calc.gif"), ("ded", "ded.gif"),
-            ("dev", "dev.gif"), ("doc", "doc.gif"), ("exit", "exit.gif"),
-            ("ktimer", "ktimer.gif"), ("mail", "mail.gif"),
-            ("poweroff", "poweroff.gif"), ("run", "run.gif"),
-            ("web", "web.gif"), ("xfe", "xfe.gif")
-        ]
+        # Верхняя панель: меню и кнопки в одной строке
+        self.top_bar = TopBar(self)
+        self.addToolBar(self.top_bar)
 
-        for name, filename in icons_list:
-            path = get_image_path(filename)
-            if not os.path.exists(path):
-                print(f"[WARNING] Картинка не найдена: {path}")
-                self.images[name] = None
-                continue
+        # Основное содержимое (заглушка)
+        self.main_content = QLabel("<h1>StartXPy</h1><p>Основное окно.</p>")
+        self.main_content.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.main_content.setStyleSheet("font-size:18px; padding:40px; color:#333;")
+
+        # Чат и браузер (для DED-режима)
+        self.chat = ChatPanel()
+        self.browser = BrowserPanel()
+
+        # Сплиттер (переключатель DED)
+        self.splitter = SplitterLayout(self.main_content, self.chat, self.browser)
+        main_layout.addWidget(self.splitter, stretch=1)
+
+        # Статусбар (внизу: сообщение + часы + запущенные программы)
+        self.status = StatusBar(self)
+        self.setStatusBar(self.status)
+
+        self._is_fullscreen = True
+        self._ded_active = False
+
+        # Сразу включаем полноэкран
+        self.showFullScreen()
+        self.status.showMessage("Полноэкранный режим (по умолчанию)", 0)
+
+    # --- Обработчик кнопок (теперь они в TopBar) ---
+    def on_taskbar_click(self, label: str):
+        msg = f"Нажата кнопка: {label}"
+        self.status.showMessage(msg, 0)
+
+        if label == "DED":
+            self.toggle_ded_mode()
+        elif label == "Exit":
+            self.close()
+        elif label == "Doc":
+            self.open_doc()
+        elif label == "Web":
+            url = "https://ya.ru"
+            self.status.showMessage("Запуск внешнего браузера...", 3000)
             try:
-                self.images[name] = PhotoImage(file=path)
-                #print(f"[OK] Загружена: {filename}")
+                subprocess.Popen(["xdg-open", url])
             except Exception as e:
-                print(f"[ERROR] Не удалось загрузить {filename}: {e}")
-                self.images[name] = None
+                self.status.showMessage(f"Ошибка запуска браузера: {e}", 5000)
+        else:
+            # Сюда можно добавить логику для AI, Dev, Timer и т.п.
+            pass
 
-        # --- МЕНЮ ---
-        menu = Menu(self)
-        self.config(menu=menu)
+    def open_doc(self):
+        path = get_resource_path("data/index.html")
+        import os
+        if os.path.isfile(path):
+            from PyQt6.QtCore import QUrl
+            self.browser.setUrl(QUrl.fromLocalFile(path))
+            self.status.showMessage("Открыт index.html в панели браузера", 3000)
+            if not self._ded_active:
+                self.toggle_ded_mode()
+        else:
+            self.status.showMessage("Файл data/index.html не найден.", 5000)
 
-        def clicked():
-            messagebox.showinfo('Заголовок', 'Текст')
+    def toggle_ded_mode(self):
+        self._ded_active = not self._ded_active
+        self.splitter.set_ded_active(self._ded_active)
+        state_text = "Режим DED: ВКЛ (чат + браузер)" if self._ded_active else "Режим DED: ВЫКЛ"
+        self.status.showMessage(state_text, 0)
+        self.top_bar.act_toggle_ded.setChecked(self._ded_active)
 
-        def exec_calc():
-            run_safe(['galculator'])
+    def toggle_fullscreen(self):
+        self._is_fullscreen = not self._is_fullscreen
+        if self._is_fullscreen:
+            self.showFullScreen()
+            self.status.showMessage("Полноэкранный режим", 3000)
+        else:
+            self.showNormal()
+            self.status.showMessage("Обычный режим", 3000)
 
-        def exec_doc():
-            # ИСПРАВЛЕНО: вместо /usr/bin/writer -> libreoffice --writer
-            run_safe(['libreoffice', '--writer'])
+    def update_running_list(self, programs: list[str]):
+        self.status.set_running_programs(programs)
 
-        def exec_xfe():
-            run_safe(['xfe'])
-
-        def exec_run():
-            cmd = simpledialog.askstring("Enter cmd", "Enter CMD:")
-            if cmd:
-                try:
-                    subprocess.Popen(cmd.split())
-                except Exception as e:
-                    messagebox.showerror("Ошибка запуска", str(e))
-
-        def exec_term():
-            run_safe(['lxterminal'])
-
-        def ded():
-            messagebox.showinfo('ded', 'DED')
-
-        def exec_ktimer():
-            run_safe(['ktimer'])
-
-        def exec_poweroff():
-            # Внимание: sudo требует настройки visudo
-            try:
-                subprocess.Popen(['sudo', '/usr/sbin/shutdown', 'now'])
-            except Exception as e:
-                messagebox.showerror("Ошибка выключения", str(e))
-
-        # Вспомогательная функция для безопасного запуска программ
-        def run_safe(cmd_list):
-            try:
-                subprocess.Popen(cmd_list)
-            except FileNotFoundError:
-                msg = f"Программа не найдена: {' '.join(cmd_list)}\nУстановите её через apt."
-                messagebox.showwarning("Программа не установлена", msg)
-            except Exception as e:
-                messagebox.showerror("Ошибка", str(e))
-
-        # Вспомогательная функция для добавления пункта с иконкой
-        def add_cmd(label, command, image_name=None):
-            img = self.images.get(image_name)
-            menu.add_command(label=label, command=command, image=img, compound=tk.TOP)
-
-        add_cmd('mail', clicked, 'mail')
-        add_cmd('doc', exec_doc, 'doc')
-        add_cmd('files', exec_xfe, 'xfe')
-        add_cmd('calc', exec_calc, 'calc')
-        add_cmd('web', clicked, 'web')
-
-        # Подменю run
-        item_run = Menu(menu, tearoff=False)
-        item_run.add_command(label='menu-find', command=clicked)
-        item_run.add_command(label='terminal', command=exec_term)
-        item_run.add_command(label='run', command=exec_run)
-        menu.add_cascade(label='run', menu=item_run, image=self.images.get('run'), compound=tk.TOP)
-
-        # Подменю dev
-        item_dev = Menu(menu, tearoff=False)
-        dev_items = ['VSCODE', 'pycharm', 'ERIC', 'QTcreator', 'geany', 'git', 'fm', 'term']
-        for item in dev_items:
-            item_dev.add_command(label=item, command=clicked)
-        menu.add_cascade(label='dev', menu=item_dev, image=self.images.get('dev'), compound=tk.TOP)
-
-        # Пункт DED
-        add_cmd('DED', ded, 'ded')
-
-        # Подменю AI
-        item_ai = Menu(menu, tearoff=False)
-        ai_items = [
-            "Cursor", "Claude code", "Perplexity", "Cluely", "LangChain",
-            "Gemini Veo", "Firefly", "Reve Jmage", "Notebook LM",
-            "GPT yandex", "Chat GPT", "Yupyter", "Easy Diffusion"
-        ]
-        for item in ai_items:
-            item_ai.add_command(label=item, command=clicked)
-        menu.add_cascade(label='AI', menu=item_ai, image=self.images.get('ai'), compound=tk.TOP)
-
-        # Остальные пункты
-        add_cmd('exit', lambda: self.destroy(), 'exit')
-        add_cmd('ktimer', exec_ktimer, 'ktimer')
-        add_cmd('poweroff', exec_poweroff, 'poweroff')
-
-        # Статусбар
-        self.statusbar = tk.Label(self, text="", bd=1, relief=tk.SUNKEN, anchor=tk.W)
-        self.statusbar.pack(side=tk.BOTTOM, fill=tk.X)
-
-        self.update_time()
-
-    def update_time(self):
-        current_time = time.strftime('%A, %d.%m.%Y, %H:%M')
-        self.statusbar.config(text=current_time)
-        self.after(1000, self.update_time)
