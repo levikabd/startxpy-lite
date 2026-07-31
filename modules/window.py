@@ -11,6 +11,32 @@ from tkinter import simpledialog
 # import sys
 # import psutil
 
+from modules.menu import MenuBar
+from modules.taskbar import TaskBar
+from modules.statusbar import StatusBar
+
+class Application(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("StartX")
+        self.geometry("1200x800")
+        
+        # Инициализация компонентов
+        self.menu_bar = MenuBar(self)
+        self.config(menu=self.menu_bar)
+        
+        self.taskbar = TaskBar(self)
+        self.taskbar.pack(side=tk.TOP, fill=tk.X)
+        
+        self.statusbar = StatusBar(self)
+        self.statusbar.pack(side=tk.BOTTOM, fill=tk.X)
+        
+        # Основной контент
+        self.content_frame = tk.Frame(self)
+        self.content_frame.pack(fill=tk.BOTH, expand=True)
+
+
+
 def clicked():
     messagebox.showinfo('Заголовок', 'Текст')
 
@@ -47,7 +73,7 @@ def exec_poweroff():
 #"""Возвращает абсолютный нормализованный путь к картинке в папке data"""
 def get_image_path(filename):
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    path = os.path.join(base_dir, "..", "data", filename)
+    path = os.path.join(base_dir, "..", "assets/icons", filename)
     return os.path.normpath(path)
 
 # Словарь: ключ — имя переменной/логическое имя, значение — объект PhotoImage
