@@ -1,14 +1,3 @@
-<<<<<<< HEAD
-import sys
-from PyQt6.QtWidgets import QApplication
-from src.startxpy.main_window import MainWindow
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = MainWindow()
-    window.show()
-    sys.exit(app.exec())
-=======
 # main.py
 import tkinter as tk
 from modules.window import Application
@@ -33,4 +22,8 @@ class MainApp(Application):
 if __name__ == "__main__":
     app = MainApp()
     app.mainloop()
->>>>>>> py_only
+
+# if __name__ == "__main__":
+#     app = Application()
+#     app.mainloop()
+

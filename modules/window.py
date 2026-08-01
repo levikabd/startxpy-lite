@@ -2,39 +2,59 @@ import os
 from tkinter import *
 from tkinter import Menu
 from tkinter import messagebox
-import tkinter as tk
 import subprocess
 from tkinter import simpledialog
+import tkinter as tk
+from tkinter import PhotoImage
+
+from modules.menu import MenuBar
+from modules.taskbar import TaskBar
+from modules.statusbar import StatusBar
 
 # import time
 # import datetime
 # import sys
 # import psutil
 
-from modules.menu import MenuBar
-from modules.taskbar import TaskBar
-from modules.statusbar import StatusBar
-
 class Application(tk.Tk):
     def __init__(self):
-        super().__init__()
-        self.title("StartX")
-        self.geometry("1200x800")
-        
-        # Инициализация компонентов
-        self.menu_bar = MenuBar(self)
-        self.config(menu=self.menu_bar)
-        
-        self.taskbar = TaskBar(self)
-        self.taskbar.pack(side=tk.TOP, fill=tk.X)
-        
-        self.statusbar = StatusBar(self)
-        self.statusbar.pack(side=tk.BOTTOM, fill=tk.X)
-        
-        # Основной контент
+        super().__init__()  # Сначала создаём главное окно — это обязательно
+
+        self.title("StartXPy")
+        self.geometry("1024x768")
+
+        # Загружаем иконки только после создания root-окна
+        self.images = {}
+        base_dir = os.path.dirname(os.path.abspath(__file__))  # папка modules/
+        icons_dir = os.path.join(base_dir, "..", "..", "assets", "icons")
+        icons_dir = os.path.normpath(icons_dir)
+
+        icon_map = {
+            "ai": "ai.gif",
+            "calc": "calc.gif",
+            "ded": "ded.gif",
+            "dev": "dev.gif",
+            "doc": "doc.gif",
+            "exit": "exit.gif",
+            "ktimer": "ktimer.gif",
+            "mail": "mail.gif",
+            "poweroff": "poweroff.gif",
+            "run": "run.gif",
+            "web": "web.gif",
+            "xfe": "xfe.gif",
+        }
+
+        for name, filename in icon_map.items():
+            path = os.path.join(icons_dir, filename)
+            if os.path.exists(path):
+                self.images[name] = PhotoImage(file=path)
+            else:
+                # Заглушка, чтобы код не ломался, если иконки нет
+                self.images[name] = None
+
+        # Дальше инициализируй остальное: меню, статусбар, панели и т.д.
         self.content_frame = tk.Frame(self)
         self.content_frame.pack(fill=tk.BOTH, expand=True)
-
 
 
 def clicked():
@@ -77,27 +97,27 @@ def get_image_path(filename):
     return os.path.normpath(path)
 
 # Словарь: ключ — имя переменной/логическое имя, значение — объект PhotoImage
-images = {}
-
-# Загружаем сразу несколько GIF
-for name, filename in [
-    ("ai", "ai.gif"),
-    ("calc", "calc.gif"),
-    ("ded", "ded.gif"),
-    ("dev", "dev.gif"),
-    ("doc", "doc.gif"),
-    ("exit", "exit.gif"),
-    ("ktimer", "ktimer.gif"),
-    ("mail", "mail.gif"),
-    ("poweroff", "poweroff.gif"),
-    ("run", "run.gif"),
-    ("web", "web.gif"),
-    ("xfe", "xfe.gif")
-]:
-    path = get_image_path(filename)
-    if not os.path.exists(path):
-        raise FileNotFoundError(f"Картинка не найдена: {path}")
-    images[name] = PhotoImage(file=path)
+# images = {}
+#
+# # Загружаем сразу несколько GIF
+# for name, filename in [
+#     ("ai", "ai.gif"),
+#     ("calc", "calc.gif"),
+#     ("ded", "ded.gif"),
+#     ("dev", "dev.gif"),
+#     ("doc", "doc.gif"),
+#     ("exit", "exit.gif"),
+#     ("ktimer", "ktimer.gif"),
+#     ("mail", "mail.gif"),
+#     ("poweroff", "poweroff.gif"),
+#     ("run", "run.gif"),
+#     ("web", "web.gif"),
+#     ("xfe", "xfe.gif")
+# ]:
+#     path = get_image_path(filename)
+#     if not os.path.exists(path):
+#         raise FileNotFoundError(f"Картинка не найдена: {path}")
+#     images[name] = PhotoImage(file=path)
 
 # Теперь можно использовать картинки по ключу:
 # photo_mail = images["mail"]
@@ -122,90 +142,90 @@ for name, filename in [
 # photo_exit = PhotoImage(file =r"../data/exit.gif")
 # photo_ktimer = PhotoImage(file =r"../data/ktimer.gif")
 # photo_poweroff = PhotoImage(file =r"../data/poweroff.gif")
-
-photo_ai = images["ai"]
-photo_calc = images["calc"]
-photo_ded = images["ded"]
-photo_dev = images["dev"]
-photo_doc = images["doc"]
-photo_exit = images["exit"]
-photo_ktimer = images["ktimer"]
-photo_mail = images["mail"]
-photo_poweroff = images["poweroff"]
-photo_run = images["run"]
-photo_web = images["web"]
-photo_xfe = images["xfe"]
-
-menu = Menu(window)
-
-item_0 = Menu(menu)
-#item_0.add_command(label='mail', command=clicked)
-menu.add_command(label='mail', command=clicked, image = photo_mail, compound=TOP)
-
-item_1 = Menu(menu)
-#item_1.add_command(label='doc', command=clicked)
-menu.add_command(label='doc',command=clicked, image = photo_doc, compound=TOP)
-
-item_21 = Menu(menu)
-#item_21.add_command(label='web', command=clicked)
-menu.add_command(label='files',command=exec_xfe, image = photo_xfe, compound=TOP)
-
-item_22 = Menu(menu)
-#item_22.add_command(label='web', command=clicked)
-menu.add_command(label='calc',command=exec_calc, image = photo_calc, compound=TOP)
-
-item_2 = Menu(menu)
-#item_2.add_command(label='web', command=clicked)
-menu.add_command(label='web',command=clicked, image = photo_web, compound=TOP)
-
-item_23 = Menu(menu)
-#item_23.add_command(label='web', command=clicked)
-item_23.add_command(label='menu-find', command=clicked)
-item_23.add_command(label='terminal', command=exec_term)
-item_23.add_command(label='run', command=exec_run)
-menu.add_cascade(label='run', menu=item_23, image = photo_run, compound=TOP)
-
-item_3 = Menu(menu)
-item_3.add_command(label='VSCODE', command=clicked)
-item_3.add_command(label='pycharm', command=clicked)
-item_3.add_command(label='ERIC', command=clicked)
-item_3.add_command(label='QTcreator', command=clicked)
-item_3.add_command(label='geany', command=clicked)
-item_3.add_command(label='git', command=clicked)
-item_3.add_command(label='fm', command=clicked)
-item_3.add_command(label='term', command=clicked)
-#menu.add_command(label='dev', command=clicked)
-menu.add_cascade(label='dev', menu=item_3, image = photo_dev, compound=TOP)
-
-item_4 = Menu(menu)
-#item_4.add_command(label='DED', command=ded)
-menu.add_command(label='DED', command=ded, image = photo_ded, compound=TOP)
-
-item_5 = Menu(menu)
-item_5.add_command(label="Cursor", command=clicked)
-item_5.add_command(label="Claude code", command=clicked)
-item_5.add_command(label="Perplexity", command=clicked)
-item_5.add_command(label="Cluely", command=clicked)
-item_5.add_command(label="LangChain", command=clicked)
-item_5.add_command(label="Gemini Veo", command=clicked)
-item_5.add_command(label="Firefly", command=clicked)
-item_5.add_command(label="Reve Jmage", command=clicked)
-item_5.add_command(label="Notebook LM", command=clicked)
-item_5.add_command(label="GPT yandex", command=clicked) 
-item_5.add_command(label="Chat GPT", command=clicked) 
-item_5.add_command(label="Yupyter", command=clicked) 
-item_5.add_command(label="Easy Diffusion", command=clicked) 
-#menu.add_cascade(label="File", menu=item_5)
-#item_5.add_command(label='DED', command=ded)
-#menu.add_command(label='DED', command=ded)
-menu.add_cascade(label='AI', menu=item_5, image = photo_ai, compound=TOP)
-
-item_6 = Menu(menu)
-#item_6.add_command(label='exit', command=clicked)
-menu.add_command(label='exit', command=lambda: window.destroy(), image = photo_exit, compound=TOP)
-item_7 = Menu(menu)
-#item_7.add_command(label='exit', command=clicked)
-menu.add_command(label='ktimer', command=exec_ktimer, image = photo_ktimer, compound=TOP)
-item_8 = Menu(menu)
-#item_8.add_command(label='exit', command=clicked)
-menu.add_command(label='poweroff', command=exec_poweroff, image = photo_poweroff, compound=TOP)
+#
+# photo_ai = images["ai"]
+# photo_calc = images["calc"]
+# photo_ded = images["ded"]
+# photo_dev = images["dev"]
+# photo_doc = images["doc"]
+# photo_exit = images["exit"]
+# photo_ktimer = images["ktimer"]
+# photo_mail = images["mail"]
+# photo_poweroff = images["poweroff"]
+# photo_run = images["run"]
+# photo_web = images["web"]
+# photo_xfe = images["xfe"]
+#
+# menu = Menu(window)
+#
+# item_0 = Menu(menu)
+# #item_0.add_command(label='mail', command=clicked)
+# menu.add_command(label='mail', command=clicked, image = photo_mail, compound=TOP)
+#
+# item_1 = Menu(menu)
+# #item_1.add_command(label='doc', command=clicked)
+# menu.add_command(label='doc',command=clicked, image = photo_doc, compound=TOP)
+#
+# item_21 = Menu(menu)
+# #item_21.add_command(label='web', command=clicked)
+# menu.add_command(label='files',command=exec_xfe, image = photo_xfe, compound=TOP)
+#
+# item_22 = Menu(menu)
+# #item_22.add_command(label='web', command=clicked)
+# menu.add_command(label='calc',command=exec_calc, image = photo_calc, compound=TOP)
+#
+# item_2 = Menu(menu)
+# #item_2.add_command(label='web', command=clicked)
+# menu.add_command(label='web',command=clicked, image = photo_web, compound=TOP)
+#
+# item_23 = Menu(menu)
+# #item_23.add_command(label='web', command=clicked)
+# item_23.add_command(label='menu-find', command=clicked)
+# item_23.add_command(label='terminal', command=exec_term)
+# item_23.add_command(label='run', command=exec_run)
+# menu.add_cascade(label='run', menu=item_23, image = photo_run, compound=TOP)
+#
+# item_3 = Menu(menu)
+# item_3.add_command(label='VSCODE', command=clicked)
+# item_3.add_command(label='pycharm', command=clicked)
+# item_3.add_command(label='ERIC', command=clicked)
+# item_3.add_command(label='QTcreator', command=clicked)
+# item_3.add_command(label='geany', command=clicked)
+# item_3.add_command(label='git', command=clicked)
+# item_3.add_command(label='fm', command=clicked)
+# item_3.add_command(label='term', command=clicked)
+# #menu.add_command(label='dev', command=clicked)
+# menu.add_cascade(label='dev', menu=item_3, image = photo_dev, compound=TOP)
+#
+# item_4 = Menu(menu)
+# #item_4.add_command(label='DED', command=ded)
+# menu.add_command(label='DED', command=ded, image = photo_ded, compound=TOP)
+#
+# item_5 = Menu(menu)
+# item_5.add_command(label="Cursor", command=clicked)
+# item_5.add_command(label="Claude code", command=clicked)
+# item_5.add_command(label="Perplexity", command=clicked)
+# item_5.add_command(label="Cluely", command=clicked)
+# item_5.add_command(label="LangChain", command=clicked)
+# item_5.add_command(label="Gemini Veo", command=clicked)
+# item_5.add_command(label="Firefly", command=clicked)
+# item_5.add_command(label="Reve Jmage", command=clicked)
+# item_5.add_command(label="Notebook LM", command=clicked)
+# item_5.add_command(label="GPT yandex", command=clicked)
+# item_5.add_command(label="Chat GPT", command=clicked)
+# item_5.add_command(label="Yupyter", command=clicked)
+# item_5.add_command(label="Easy Diffusion", command=clicked)
+# #menu.add_cascade(label="File", menu=item_5)
+# #item_5.add_command(label='DED', command=ded)
+# #menu.add_command(label='DED', command=ded)
+# menu.add_cascade(label='AI', menu=item_5, image = photo_ai, compound=TOP)
+#
+# item_6 = Menu(menu)
+# #item_6.add_command(label='exit', command=clicked)
+# menu.add_command(label='exit', command=lambda: window.destroy(), image = photo_exit, compound=TOP)
+# item_7 = Menu(menu)
+# #item_7.add_command(label='exit', command=clicked)
+# menu.add_command(label='ktimer', command=exec_ktimer, image = photo_ktimer, compound=TOP)
+# item_8 = Menu(menu)
+# #item_8.add_command(label='exit', command=clicked)
+# menu.add_command(label='poweroff', command=exec_poweroff, image = photo_poweroff, compound=TOP)
