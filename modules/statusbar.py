@@ -1,11 +1,18 @@
 import tkinter as tk
 
-class StatusBar(tk.Frame):
+
+class StatusBar(tk.Label):
     def __init__(self, parent):
-        super().__init__(parent)
-        
-        self.label = tk.Label(self, bd=1, relief=tk.SUNKEN, anchor=tk.W)
-        self.label.pack(fill=tk.X)
-        
+        super().__init__(
+            parent,
+            bd=1,
+            relief=tk.SUNKEN,
+            anchor=tk.W,
+            text="Готов к работе"
+        )
+
     def set_text(self, text):
-        self.label.config(text=text)
+        self.config(text=text)
+
+    def clear(self):
+        self.config(text="Готов к работе")
