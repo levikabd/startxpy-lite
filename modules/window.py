@@ -1,6 +1,6 @@
 import os
 import tkinter as tk
-from tkinter import messagebox, simpledialog
+from tkinter import PhotoImage, messagebox
 import subprocess
 
 
@@ -10,39 +10,26 @@ class Application(tk.Tk):
         self.title("StartX")
         self.geometry("1200x800")
 
-        # Инициализация компонентов
-        self.create_widgets()
-        self.load_images()
-
-    def create_widgets(self):
-        # Панель меню
-        self.menu_bar = tk.Menu(self)
-        self.config(menu=self.menu_bar)
-
-        # Панель инструментов
-        self.toolbar = tk.Frame(self, bg='lightgray')
-        self.toolbar.pack(side=tk.TOP, fill=tk.X)
-
-        # Основной контент
-        self.content_frame = tk.Frame(self)
-        self.content_frame.pack(fill=tk.BOTH, expand=True)
-
-        # Статусбар
-        self.statusbar = tk.Label(self, text="Готов к работе", bd=1, relief=tk.SUNKEN, anchor=tk.W)
-        self.statusbar.pack(side=tk.BOTTOM, fill=tk.X)
-
-    def load_images(self):
-        # Функция для загрузки изображений
-        def get_image_path(filename):
-            base_dir = os.path.dirname(os.path.abspath(__file__))
-            path = os.path.join(base_dir, "..", "data", filename)
-            return os.path.normpath(path)
-
-        # Словарь для хранения изображений
-        self.images = {}
+        # Получаем путь к папке с изображениями
+        self.image_path = self.get_image_path()
 
         # Загружаем изображения
-        for name, filename in [
+        self.images = self.load_images()
+
+        # Создаем интерфейс
+        self.create_widgets()
+
+    def get_image_path(self):
+        # Получаем путь к папке assets/icons
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        # return os.path.join(base_dir, "assets", "icons")
+        path = os.path.join(base_dir, "assets", "icons")
+        print(f"Пытаюсь загрузить: {path}")
+        return path
+
+    def load_images(self):
+        images = {}
+        image_files = [
             ("ai", "ai.gif"),
             ("calc", "calc.gif"),
             ("ded", "ded.gif"),
@@ -55,42 +42,50 @@ class Application(tk.Tk):
             ("run", "run.gif"),
             ("web", "web.gif"),
             ("xfe", "xfe.gif")
-        ]:
-            path = get_image_path(filename)
-            if os.path.exists(path):
-                self.images[name] = tk.PhotoImage(file=path)
-            else:
-                raise FileNotFoundError(f"Картинка не найдена: {path}")
-
-    def create_toolbar(self):
-        # Создание кнопок на панели инструментов
-        buttons = [
-            ("AI", "ai"),
-            ("Calc", "calc"),
-            ("DED", "ded"),
-            ("Dev", "dev"),
-            ("Doc", "doc"),
-            ("Mail", "mail"),
-            ("Timer", "ktimer"),
-            ("Web", "web"),
-            ("Exit", "exit")
         ]
 
-        for text, image_name in buttons:
-            btn = tk.Button(self.toolbar,
-                            text=text,
-                            image=self.images[image_name],
-                            compound=tk.TOP,
-                            command=lambda t=text: self.on_button_click(t))
-            btn.image = self.images[image_name]  # Сохраняем ссылку на изображение
-            btn.pack(side=tk.LEFT, padx=2, pady=2)
+        for name, filename in image_files:
+            path = os.path.join(self.image_path, filename)
+            if os.path.exists(path):
+                try:
+                    images[name] = PhotoImage(file=path)
+                except Exception as e:
+                    print(f"Ошибка загрузки {filename}: {str(e)}")
+            else:
+                print(f"Предупреждение: изображение {filename} не найдено")
 
-    def on_button_click(self, button_text):
-        if button_text == "Exit":
-            self.quit()
-        elif button_text == "Calc":
+        return images
+
+    def create_widgets(self):
+        # Создаем панель инструментов
+        toolbar = tk.Frame(self, bg='lightgray')
+        toolbar.pack(side=tk.TOP, fill=tk.X)
+
+        # Добавляем кнопки с изображениями
+        for name in ["ai", "calc", "ded", "dev", "doc", "exit", "ktimer", "mail", "poweroff", "run", "web", "xfe"]:
+            if name in self.images:
+                btn = tk.Button(
+                    toolbar,
+                    image=self.images[name],
+                    compound=tk.TOP,
+                    text=name.capitalize(),
+                    command=lambda n=name: self.button_click(n)
+                )
+                btn.image = self.images[name]  # Сохраняем ссылку на изображение
+                btn.pack(side=tk.LEFT, padx=2, pady=2)
+
+    def button_click(self, button_name):
+        print(f"Нажата кнопка: {button_name}")
+        # Обработчик нажатий
+        if button_name == "exit":
+            self.destroy()
+        elif button_name == "calc":
             subprocess.Popen('/usr/bin/galculator')
-        elif button_text == "Doc":
+        elif button_name == "doc":
             subprocess.Popen('/usr/bin/writer')
-        # Добавить остальные обработчики...
+        # Добавьте остальные обработчики
 
+
+if __name__ == "__main__":
+    app = Application()
+    app.mainloop()
