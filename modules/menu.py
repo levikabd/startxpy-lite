@@ -1,6 +1,5 @@
 import tkinter as tk
 
-
 class MenuBar(tk.Menu):
     def __init__(self, parent):
         super().__init__(parent)
@@ -29,3 +28,14 @@ class MenuBar(tk.Menu):
         help_menu = tk.Menu(self, tearoff=0)
         help_menu.add_command(label="О программе", command=parent.show_about)
         self.add_cascade(label="Справка", menu=help_menu)
+
+
+# class TaskBar(tk.Frame):
+#     def __init__(self, parent):
+#         super().__init__(parent)
+#
+#         buttons = ["AI", "Calc", "DED", "Dev", "Doc", "Mail", "Timer", "Web", "Exit"]
+#         for btn_text in buttons:
+#             btn = tk.Button(self, text=btn_text, width=5)
+#             btn.pack(side=tk.LEFT, padx=2, pady=2)
+#
