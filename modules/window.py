@@ -1,88 +1,99 @@
+# modules/window.py
 import os
 import tkinter as tk
-from tkinter import PhotoImage, messagebox
-import subprocess
+from .menu_bar import MenuBar
+from .toolbar import Toolbar
+from .icons import load_icons
+
 from pathlib import Path
 from tkinter import ttk
+from tkinter import PhotoImage
+import subprocess
 
-# Импортируем локальные модули
-from modules import chat
-from modules import menu
-from modules import statusbar
-from modules import taskbar
-# from modules import toolbar
-
-class Application(tk.Tk):
+class MainWindow(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("StartXpy")
+        self.title("startxpy")
         self.geometry("1024x768")
-        # self.geometry("1200x800")
 
-        # Путь к логотипу
-        # #base_dir = Path(__file__).resolve().parent.parent
-        # base_dir = os.path.dirname(os.path.abspath(__file__))
-        # icon_path = os.path.join(base_dir, "assets", "icons", "startxpy-logo-32.gif")
+        # path to logo
         base_dir = Path(__file__).resolve().parent  # аналог dirname(abspath(__file__))
         icon_path = base_dir / "assets" / "icons" / "startxpy-logo-64.gif"
-
+        #icon_path = base_dir / "assets" / "icons" / "startxpy-logo-32.gif"
         if icon_path.exists():
             self.iconphoto(False, tk.PhotoImage(file=str(icon_path)))
         else:
             print("Not logo!")
 
-        self.attributes('-fullscreen', True)
+        self.fullscreen_var = tk.BooleanVar(value=True)
+        self.is_fullscreen = True
 
-        # Выход по Escape
-        self.bind('<Escape>', self.exit_fullscreen)
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        self.icons = load_icons(base_dir)
 
         # Получаем путь к папке с изображениями
         self.image_path = self.get_image_path()
-
         # Загружаем изображения
         self.images = self.load_images()
-
-        # Флаг и переменная для чекбокса
-        self.is_fullscreen = True
-        self.fullscreen_var = tk.BooleanVar(value=True)
-        # Выход по Esc (удобно, когда чекбокс включён)
-        self.bind("<Escape>", self.exit_fullscreen)
-
-        # Создаем интерфейс
         self.create_widgets()
 
-        # Добавляем компоненты приложения
-        self.chat_panel = chat.ChatPanel(self)
-        self.menu_bar = menu.MenuBar(self)
-        self.status_bar = statusbar.StatusBar(self)
-        self.task_bar = taskbar.TaskBar(self)
-        # self.tool_bar = toolbar.ToolBar(self)
+        # Создаём компоненты
+        self.menu_bar = MenuBar(
+            parent=self,
+            base_dir=base_dir,
+            icons=self.icons,
+            toggle_fullscreen_from_menu=self.toggle_fullscreen_from_menu,
+            reset_size=self.reset_size,
+        )
 
-        # Привязываем события
-        #self.menu_bar.pack(side=tk.TOP, fill=tk.X) # так неправильно
-        self.config(menu=self.menu_bar)  # ✅ так нужно прикреплять меню к окну
+        self.toolbar = Toolbar(
+            parent=self,
+            icons=self.icons,
+            toggle_fullscreen=self.toggle_fullscreen_from_menu,  # можно передать тот же метод
+        )
 
-        # self.tool_bar.pack(side=tk.TOP, fill=tk.X)
-        self.chat_panel.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
-        self.task_bar.pack(side=tk.LEFT, fill=tk.Y)
+        # Упаковываем в одну строку (сначала меню, потом панель)
+        # Но так как у обоих есть свой frame с pack(side=TOP), нужно немного хитрее:
+        # сделаем общий контейнер и вручную упакуем их side=LEFT
+        top_container = tk.Frame(self)
+        top_container.pack(side=tk.TOP, fill=tk.X)
 
-        self.status_bar.pack(side=tk.BOTTOM, fill=tk.X)
+        # Хак: забираем frame из компонентов и кладём в общий контейнер
+        # self.menu_bar.frame.pack_forget()
+        # self.toolbar.frame.pack_forget()
+        #
+        # self.menu_bar.frame.pack(in_=top_container, side=tk.LEFT, fill=tk.X, expand=True)
+        # self.toolbar.frame.pack(in_=top_container, side=tk.LEFT)
+        #
+        # # Основная область
+        # main_area = tk.Frame(self)
+        # main_area.pack(fill=tk.BOTH, expand=True)
+        # tk.Label(main_area, text="Рабочая область startxpy").pack(pady=20)
 
-    def toggle_fullscreen(self):
-        is_on = self.fullscreen_var.get()
+    def toggle_fullscreen_from_menu(self):
+        # Этот метод вызывается из меню (checkbutton)
+        is_on = not self.is_fullscreen
+        self.is_fullscreen = is_on
+        self.fullscreen_var.set(is_on)
+
         if is_on:
             self.attributes("-fullscreen", True)
-            self.is_fullscreen = True
+            # Нужно обновить кнопку в toolbar — но у нас нет прямой ссылки на неё
+            # Решение: либо хранить ссылку, либо сделать публичный метод в Toolbar
+            self.toolbar.set_fullscreen(is_on)
         else:
             self.attributes("-fullscreen", False)
-            self.is_fullscreen = False
             self.geometry("1024x768")
+            self.toolbar.set_fullscreen(is_on)
 
-    def exit_fullscreen(self, event=None):
-        self.attributes('-fullscreen', False)
-        self.geometry("1024x768")  # вернуть прежний размер
+        print(f"[Меню] Полноэкранный: {'ВКЛ' if is_on else 'ВЫКЛ'}")
+
+    def reset_size(self):
+        self.attributes("-fullscreen", False)
+        self.geometry("1024x768")
+        self.is_fullscreen = False
         self.fullscreen_var.set(False)
-        self.toggle_fullscreen()
+        self.toolbar.set_fullscreen(False)
 
 
     def get_image_path(self):
@@ -123,6 +134,18 @@ class Application(tk.Tk):
 
         return images
 
+    def toggle_fullscreen(self):
+        is_on = self.fullscreen_var.get()
+        if is_on:
+            self.attributes("-fullscreen", True)
+            self.is_fullscreen = True
+            self.fullscreen_btn.config(relief=tk.SUNKEN)
+        else:
+            self.attributes("-fullscreen", False)
+            self.is_fullscreen = False
+            self.geometry("1024x768")
+            self.fullscreen_btn.config(relief=tk.RAISED)
+
     def create_widgets(self):
         # Создаем панель инструментов
         toolbar = tk.Frame(self, bg='lightgray')
@@ -153,15 +176,6 @@ class Application(tk.Tk):
         )
         checkb.image = self.images["fullscreen"]  # Сохраняем ссылку на изображение
         checkb.pack(side=tk.LEFT, padx=2, pady=2)
-        # checkb.pack(side=tk.LEFT, padx=2, pady=2)
-        # self.fullscreen_cb.pack(side=tk.LEFT)
-        # btn = tk.Button(
-        #     toolbar,
-        #     image=self.images["fullscreen"],
-        #     compound=tk.TOP,
-        #     text='fullscreen',
-        #     command= self.toggle_fullscreen()
-        # )
 
     def button_click(self, button_name):
         print(f"Нажата кнопка: {button_name}")
@@ -173,32 +187,3 @@ class Application(tk.Tk):
         elif button_name == "doc":
             subprocess.Popen('libreoffice')
         # Добавьте остальные обработчики
-
-    def open_file(self):
-        print('File is open:-)')
-
-    def save_file(self):
-        print("File is saved :-)")
-
-    def quit(self):
-        self.destroy()
-
-    def undo(self):
-        print('undo...')
-
-    def redo(self):
-        print('redo...')
-
-    def toggle_toolbar(self):
-        print('toggle_toolbar...')
-
-    def toggle_statusbar(self):
-        print('toggle_statusbar...')
-
-    def show_about(self):
-        print("show_about...")
-
-
-if __name__ == "__main__":
-    app = Application()
-    app.mainloop()

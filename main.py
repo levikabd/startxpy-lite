@@ -1,9 +1,8 @@
-
 #import tkinter as tk
-from modules.window import Application
+from modules.window import MainWindow
 #from browser_module import BrowserWidget
 
-class MainApp(Application):
+class MainApp(MainWindow):
     def __init__(self):
         super().__init__()
         # self.browser = BrowserWidget()
@@ -22,3 +21,4 @@ class MainApp(Application):
 if __name__ == "__main__":
     app = MainApp()
     app.mainloop()
+

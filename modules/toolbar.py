@@ -1,29 +1,55 @@
+# modules/toolbar.py
 import tkinter as tk
 
+class Toolbar:
+    def __init__(self, parent, icons, toggle_fullscreen):
+        self.parent = parent
+        self.icons = icons
+        self.toggle_fullscreen_fn = toggle_fullscreen
 
-class Toolbar(tk.Frame):
-    def __init__(self, parent):
-        super().__init__(parent)
+        self.frame = tk.Frame(parent, bd=1, relief=tk.RAISED, bg="#f0f0f0")
 
-        # Создаем кнопки панели инструментов
-        self.create_buttons()
+        # Кнопка «Полноэкран»
+        btn = tk.Button(
+            self.frame,
+            text="Полноэкран",
+            image=self.icons.get("fullscreen"),
+            compound=tk.LEFT,
+            command=self._on_click,
+            relief=tk.RAISED,
+            bd=2,
+            bg="#f0f0f0",
+        )
+        btn.pack(side=tk.LEFT, padx=2, pady=2)
+        self.fullscreen_btn = btn
 
-    def create_buttons(self):
-        # Пример создания кнопок
-        buttons = [
-            ("Новый", "new.gif", parent.new_file),
-            ("Открыть", "open.gif", parent.open_file),
-            ("Сохранить", "save.gif", parent.save_file),
-            ("Печать", "print.gif", parent.print_file)
-        ]
+        # Разделитель
+        sep = tk.Label(self.frame, text="|", fg="#aaa", bg="#f0f0f0")
+        sep.pack(side=tk.LEFT, padx=6, pady=2)
 
-        for text, image, command in buttons:
-            btn = tk.Button(
-                self,
-                text=text,
-                image=parent.images[image],
-                compound=tk.TOP,
-                command=command
-            )
-            btn.image = parent.images[image]  # Сохраняем ссылку на изображение
-            btn.pack(side=tk.LEFT, padx=2, pady=2)
+        # Сюда можно добавить другие кнопки-режимы
+
+    def _on_click(self):
+        is_on = not self.parent.is_fullscreen
+        self.parent.is_fullscreen = is_on
+        self.parent.fullscreen_var.set(is_on)
+
+        if is_on:
+            self.parent.attributes("-fullscreen", True)
+            self.fullscreen_btn.config(relief=tk.SUNKEN)
+        else:
+            self.parent.attributes("-fullscreen", False)
+            self.parent.geometry("1024x768")
+            self.fullscreen_btn.config(relief=tk.RAISED)
+
+        print(f"[Панель] Полноэкранный: {'ВКЛ' if is_on else 'ВЫКЛ'}")
+
+    def pack(self, **kwargs):
+        self.frame.pack(side=tk.TOP, fill=tk.X, **kwargs)
+
+# в modules/toolbar.py, добавь в класс Toolbar:
+    def set_fullscreen(self, is_on):
+        if is_on:
+            self.fullscreen_btn.config(relief=tk.SUNKEN)
+        else:
+            self.fullscreen_btn.config(relief=tk.RAISED)
