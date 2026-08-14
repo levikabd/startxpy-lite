@@ -3,15 +3,16 @@ import tkinter as tk
 
 from .icons import load_icons
 
-class MenuBar:
-    def __init__(self, parent, base_dir, icons, toggle_fullscreen_from_menu, reset_size):
-        self.parent = parent
-        self.icons = icons
-        self.toggle_fullscreen = toggle_fullscreen_from_menu
-        self.reset_size = reset_size
+class MenubarMixin:
+    #def __init__(self, parent, base_dir, icons, toggle_fullscreen_from_menu, reset_size):
+    def setup_menu(self):
+        # self.parent = parent
+        # self.icons = icons
+        # self.toggle_fullscreen = toggle_fullscreen_from_menu
+        # self.reset_size = reset_size
 
         # Frame для строки меню (без pack — это делает родитель)
-        self.frame = tk.Frame(parent, bd=1, relief=tk.RAISED, bg="#f0f0f0")
+        self.frame = tk.Frame(self, bd=1, relief=tk.RAISED, bg="#f0f0f0")
 
         # self.create_widgets()
 
@@ -22,7 +23,7 @@ class MenuBar:
         file_menu.add_command(label="Открыть", command=lambda: print("Open"))
         file_menu.add_command(label="Сохранить", command=lambda: print("Save"))
         file_menu.add_separator()
-        file_menu.add_command(label="Выход", command=parent.quit)
+        # file_menu.add_command(label="Выход", command=parent.quit)
         print('add menu file')
 
         # «Вид»
@@ -32,14 +33,14 @@ class MenuBar:
 
         view_menu.add_checkbutton(
             label="Полноэкранный режим",
-            variable=parent.fullscreen_var,
-            command=self.toggle_fullscreen,
-            image=self.icons.get("fullscreen"),
+            # variable=parent.fullscreen_var,
+            #command=self.toggle_fullscreen,
+            # image=self.icons.get("fullscreen"),
             compound=tk.LEFT,
         )
         view_menu.add_separator()
-        view_menu.add_command(label="Сбросить размер", command=self.reset_size)
-        print('image', self.icons.get("fullscreen"))
+        #view_menu.add_command(label="Сбросить размер", command=self.reset_size)
+        # print('image', self.icons.get("fullscreen"))
 
     # def create_widgets(self):
     #     # Создаем панель инструментов
