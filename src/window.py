@@ -2,15 +2,19 @@ import tkinter as tk
 import os
 from mixins.layout import LayoutMixin
 from mixins.menubar import MenubarMixin
-# from mixins.menu_and_toolbar import MenuToolbarMixin
-# from mixins.menu_and_toolbar import MenuToolbarMixin
-# from mixins.menu_and_toolbar import MenuToolbarMixin
+from mixins.click import ClickMixin
+# from mixins.chat import ChatMixin
+# from mixins.toolbar import ToolbarMixin
 
-#class MainWindow(WindowLayoutMixin, MenuToolbarMixin):
-class MainWindow(tk.Tk, LayoutMixin, MenubarMixin):
+#class MainWindow(tk.Tk, LayoutMixin, MenubarMixin, ToolbarMixin):
+class MainWindow(tk.Tk, LayoutMixin, MenubarMixin, ClickMixin):
         def __init__(self):
                 super().__init__()
                 self.base_dir = os.path.dirname(os.path.abspath(__file__))
+                self.is_fullscreen = True
+                self.fullscreen_var = tk.BooleanVar()
+                self.fullscreen_var.set(self.is_fullscreen)
+
                 self.icons = {}
 
                 self.setup_layout()
