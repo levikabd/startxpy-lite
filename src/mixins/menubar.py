@@ -33,6 +33,7 @@ class MenubarMixin:
             ("poweroff", "poweroff.gif"),
             ("run", "run.gif"),
             ("web", "web.gif"),
+            ("settings", "settings.gif"),
             ("fullscreen", "fullscreen.gif"),
             ("xfe", "xfe.gif")
         ]
@@ -53,7 +54,7 @@ class MenubarMixin:
         self.toolbar = tk.Frame(self, bg='lightgray')
         self.toolbar.pack(side=tk.TOP, fill=tk.X)
 
-        for name in ["doc", "mail", "calc", "xfe", "run", "web", "dev", "ai", "ded", "ktimer", "poweroff", "exit"]:
+        for name in ["doc", "mail", "calc", "xfe", "run", "web", "dev", "ai", "ded", "ktimer", "settings", "poweroff", "exit"]:
             if name in self.icons:
                 btn = tk.Button(
                     self.toolbar,
