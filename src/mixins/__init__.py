@@ -1,7 +1,8 @@
-#from .chat import ChatMixin
-#from .icons import IconsMixin
+from .click import ClickMixin
 from .menubar import MenubarMixin
-#from .toolbar import ToolbarMixin
 from .layout import LayoutMixin
+#from .chat import ChatMixin
+from .statusbar import StatusbarMixin
+# from .taskbar import TaskbarMixin
 
-#__all__ = ["WindowLayoutMixin"]  # MenuToolbarMixin остаётся «внутренним»
+#__all__ = ["WindowLayoutMixin"]  # MenuToolbarMixin
