@@ -10,7 +10,8 @@ class MenubarMixin:
         self.base_dir = Path(__file__).resolve().parent.parent.parent
         self.image_path = self.get_image_path()
         self.icons = self.load_icons()
-        self.create_widgets()
+        return self.create_widgets()
+
 
     def get_image_path(self):
         # return os.path.join(base_dir, "assets", "icons")
@@ -78,4 +79,6 @@ class MenubarMixin:
         check_button.image = self.icons["fullscreen"]  # Сохраняем ссылку на изображение
         check_button.pack(side=tk.LEFT, padx=2, pady=2)
         self.bind("<Escape>", self.on_escape)
+
+        return self.toolbar
 

@@ -1,5 +1,5 @@
 import tkinter as tk
-from ..utils.launcher import launch_ide
+from src.utils.launcher import launch_ide
 
 class DevToolbarMixin:
     def setup_dev_toolbar(self, parent):
@@ -28,8 +28,9 @@ class DevToolbarMixin:
 
     def on_ide_select(self, ide_name: str):
         # Если хочешь открывать конкретный проект — подставь путь сюда
-        project_path = None  # например: "/home/lev/yadi/DEVEL/startxpy"
-        success = launch_ide(ide_name, project_path=project_path)
-        if not success:
-            # Тут можно добавить всплывающее окно с ошибкой, если нужно
-            pass
+        # project_path = None  # например: "/home/lev/yadi/DEVEL/startxpy"
+        # success = launch_ide(ide_name, project_path=project_path)
+        # if not success:
+        #     # Тут можно добавить всплывающее окно с ошибкой, если нужно
+        #     pass
+        print(ide_name)
