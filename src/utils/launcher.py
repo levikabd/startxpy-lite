@@ -44,3 +44,4 @@ def launch_ide(ide_name: str, project_path: Optional[str] = None) -> bool:
     except Exception as e:
         print(f"[Launcher] Ошибка запуска {cmd}: {e}")
         return False
+

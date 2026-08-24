@@ -23,7 +23,7 @@ class MainWindow(tk.Tk, LayoutMixin, MenubarMixin, ClickMixin, StatusbarMixin, D
                 # menu=self.setup_menu()
                 # self.setup_dev_toolbar(menu)
                 self.setup_menu()
-                # self.setup_dev_toolbar(self)
+                self.setup_dev_toolbar(self)
 
                 self.setup_statusbar()
 

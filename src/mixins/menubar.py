@@ -54,7 +54,7 @@ class MenubarMixin:
     def create_widgets(self):
         self.toolbar = tk.Frame(self, bg='lightgray')
         self.toolbar.pack(side=tk.TOP, fill=tk.X)
-
+        self.btn_dev = None
         for name in ["doc", "mail", "calc", "xfe", "run", "web", "dev", "ai", "ded", "ktimer", "settings", "poweroff", "exit"]:
             if name in self.icons:
                 btn = tk.Button(
@@ -66,6 +66,9 @@ class MenubarMixin:
                 )
                 btn.image = self.icons[name]  # Сохраняем ссылку на изображение
                 btn.pack(side=tk.LEFT, padx=2, pady=2)
+                if name == "dev":
+                    self.btn_dev = btn
+                # else:
                 # print('button ', name, 'add')
 
         check_button = ttk.Checkbutton(
