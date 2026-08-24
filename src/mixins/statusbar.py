@@ -2,6 +2,7 @@
 import tkinter as tk
 # from tkinter import ttk
 import os
+from email.mime import image
 from tkinter import PhotoImage
 from datetime import datetime
 
@@ -12,12 +13,14 @@ class StatusbarMixin:
         self.statusbar_frame = tk.Frame(self, borderwidth=2, relief=tk.RAISED)
         self.statusbar_frame.pack(side=tk.BOTTOM, fill=tk.X)
 
-        pathOnline = None
+        self.status_icon = None
+        # pathOnline = None
         # path = os.path.join(self.image_path, 'online12.gif')
         path = os.path.join(self.image_path, 'online24.gif')
         if os.path.exists(path):
             try:
-                pathOnline = PhotoImage(file=path)
+                # pathOnline = PhotoImage(file=path)
+                self.status_icon = PhotoImage(file=path)
                 # print(f"Путь к файлу статуса: {path}  - OK.")
             except Exception as e:
                 print(f"Ошибка загрузки {path}: {str(e)}")
@@ -28,7 +31,8 @@ class StatusbarMixin:
         self.status_label = tk.Label(
             self.statusbar_frame,
             text="Online",
-            image=pathOnline,
+            # image=pathOnline,
+            image=self.status_icon,
             compound=tk.LEFT,
             anchor=tk.W,
             bg="#e0f7fa",

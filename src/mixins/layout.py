@@ -22,7 +22,11 @@ class LayoutMixin:
             self.attributes("-fullscreen", True)
         else:
             self.attributes("-fullscreen", False)
-            self.geometry("1024x768")
+            # self.geometry("1024x768")
+            # self.state("zoomed")
+            width = self.winfo_screenwidth()
+            height = self.winfo_screenheight()
+            self.geometry(f"{width}x{height}")
         # print(f"[Меню] Полноэкранный: {'ВКЛ' if self.is_fullscreen else 'ВЫКЛ'}")
 
     # def reset_size(self):
