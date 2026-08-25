@@ -68,6 +68,8 @@ class MenubarMixin:
                 btn.pack(side=tk.LEFT, padx=2, pady=2)
                 if name == "dev":
                     self.btn_dev = btn
+                elif name=="run":
+                    self.btn_run = btn
                 # else:
                 # print('button ', name, 'add')
 

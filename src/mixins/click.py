@@ -31,12 +31,14 @@ class ClickMixin:
             print('open ded')
             # subprocess.Popen('/usr/bin/ded')
         elif button_name == "dev":
-            print('open dev')
+            # print('open dev')
             # subprocess.Popen('/usr/bin/dev')
+            pass
         elif button_name == "ktimer":
             # print('open ktimer')
             # subprocess.Popen('/usr/bin/ktimer')
-            subprocess.Popen('ktimer')
+            # subprocess.Popen('ktimer')
+            pass
         elif button_name == "mail":
             # print('open mail')
             # subprocess.Popen('/usr/bin/thunderbird')
