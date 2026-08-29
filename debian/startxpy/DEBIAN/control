@@ -1,0 +1,11 @@
+Package: startxpy
+Version: 0.6.0-1
+Architecture: all
+Maintainer: Твое Имя <levikabd@yandex.ru>
+Installed-Size: 8
+Depends: python3-tk
+Section: python
+Priority: optional
+Description: IDE/launcher для проектов (startxpy)
+ Пакет - дополнение к графической оболочке для удобства работы
+ и запуска необходимых программ с GUI на Tkinter.

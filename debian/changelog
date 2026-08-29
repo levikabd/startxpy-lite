@@ -1,0 +1,7 @@
+startxpy (0.6.0-1) stable; urgency=medium
+
+  * Initial release for Debian.
+  * Added command runner with output window (CommandRunnerMixin).
+  * Fixed AttributeError on _execute_command_with_output binding.
+
+ -- Твое Имя <levikabd@yandex.ru>  Mon, 28 Aug 2026 00:50:00 +0700

@@ -5,11 +5,12 @@ class LayoutMixin:
     def setup_layout(self):
         self.title("startxpy")
         # self.geometry("1024x768")
-        self.attributes("-fullscreen", True)
+        self.geometry("950x600")
+        self.attributes("-fullscreen", False)
 
         # path to logo
         base_dir = Path(__file__).resolve().parent.parent.parent
-        icon_path = base_dir / "assets" / "icons" / "startxpy-logo-64.gif"
+        icon_path = base_dir / "startxpy" / "assets" / "icons" / "startxpy-logo-64.gif"
         #icon_path = base_dir / "assets" / "icons" / "startxpy-logo-32.gif"
         if icon_path.exists():
             self.iconphoto(False, tk.PhotoImage(file=str(icon_path)))

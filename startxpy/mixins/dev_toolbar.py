@@ -1,6 +1,6 @@
 import tkinter as tk
 import tkinter.messagebox as mb
-from src.utils.launcher import launch_ide
+from startxpy.utils.launcher import launch_ide
 
 class DevToolbarMixin:
     def setup_dev_toolbar(self, parent):

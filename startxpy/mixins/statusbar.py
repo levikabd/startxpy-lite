@@ -2,7 +2,7 @@
 import tkinter as tk
 # from tkinter import ttk
 import os
-from email.mime import image
+# from email.mime import image
 from tkinter import PhotoImage
 from datetime import datetime
 

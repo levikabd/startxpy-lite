@@ -15,7 +15,7 @@ class MenubarMixin:
 
     def get_image_path(self):
         # return os.path.join(base_dir, "assets", "icons")
-        icon_path = self.base_dir / "assets" / "icons"
+        icon_path = self.base_dir / "startxpy" / "assets" / "icons"
         # print(f"Пытаюсь загрузить: {icon_path}")
         return icon_path
 
