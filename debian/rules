@@ -1,3 +1,17 @@
 #!/usr/bin/make -f
-%:
-	dh $@
+export DH_PYTHON3_BUILDSYSTEM=setuptools	
+
+%:	
+	dh	$@	--with	python3		
+
+override_dh_auto_clean:		
+	touch	debian/startxpy.substvars	
+
+override_dh_auto_configure:	
+	:	
+
+override_dh_auto_build:		
+	:	
+
+override_dh_auto	install:	
+	python3	setup.py	install	--prefix=/usr	--root=$(CURDIR)/debian/startxpy	--no-compile	

@@ -1,0 +1,2 @@
+[console_scripts]
+startxpy = startxpy.launcher:main

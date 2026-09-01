@@ -1,8 +1,8 @@
 Package: startxpy
-Version: 0.6.0-1
+Version: 0.6.1-1
 Architecture: all
-Maintainer: Твое Имя <levikabd@yandex.ru>
-Installed-Size: 8
+Maintainer: Lev <levikabd@yandex.ru>
+Installed-Size: 82
 Depends: python3-tk
 Section: python
 Priority: optional
