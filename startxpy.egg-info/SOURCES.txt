@@ -37,4 +37,3 @@ startxpy/mixins/taskbar.py
 startxpy/utils/__init__.py
 startxpy/utils/launcher.py
 startxpy/utils/run.py
-tests/__init__.py

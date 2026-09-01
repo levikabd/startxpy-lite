@@ -1,11 +1,11 @@
 Package: startxpy
-Version: 0.6.1-1
+Version: 0.6.2-1
 Architecture: all
 Maintainer: Lev <levikabd@yandex.ru>
-Installed-Size: 82
-Depends: python3-tk
+Installed-Size: 87
+Depends: python3:any
 Section: python
 Priority: optional
-Description: IDE/launcher для проектов (startxpy)
- Пакет - дополнение к графической оболочке для удобства работы
- и запуска необходимых программ с GUI на Tkinter.
+Description: IDE-like launcher/windowing framework for Python/Tkinter projects
+ A small framework to launch and manage Tkinter-based IDE-like windows,
+ with mixins for menubar, statusbar, taskbar, dev-toolbar, etc.
