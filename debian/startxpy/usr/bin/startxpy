@@ -1,10 +1,10 @@
 #! /usr/bin/python3
-# EASY-INSTALL-ENTRY-SCRIPT: 'startxpy==0.6.2.post1','console_scripts','startxpy'
+# EASY-INSTALL-ENTRY-SCRIPT: 'startxpy==0.6.4.post1','console_scripts','startxpy'
 import re
 import sys
 
 # for compatibility with easy_install; see #2198
-__requires__ = 'startxpy==0.6.2.post1'
+__requires__ = 'startxpy==0.6.4.post1'
 
 try:
     from importlib.metadata import distribution
@@ -30,4 +30,4 @@ globals().setdefault('load_entry_point', importlib_load_entry_point)
 
 if __name__ == '__main__':
     sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0])
-    sys.exit(load_entry_point('startxpy==0.6.2.post1', 'console_scripts', 'startxpy')())
+    sys.exit(load_entry_point('startxpy==0.6.4.post1', 'console_scripts', 'startxpy')())

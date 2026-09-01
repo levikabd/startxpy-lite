@@ -1,8 +1,8 @@
-4930e569cf4a84f549b1fffadacdb085  usr/bin/startxpy
-d3e10bbbeb0112194cd9e4a0cc1b7d1a  usr/lib/python3/dist-packages/startxpy-0.6.2.post1.egg-info/PKG-INFO
-68b329da9893e34099c7d8ad5cb9c940  usr/lib/python3/dist-packages/startxpy-0.6.2.post1.egg-info/dependency_links.txt
-1d1fb0d88c57db3affe74ec3ea5ea62f  usr/lib/python3/dist-packages/startxpy-0.6.2.post1.egg-info/entry_points.txt
-fd47b6eb93e9ada6c73143f3b5934732  usr/lib/python3/dist-packages/startxpy-0.6.2.post1.egg-info/top_level.txt
+fb3cf092d742d445fa7451f4ad2f3859  usr/bin/startxpy
+51662a2bf9b5cdb15c81e9f5aca9f2eb  usr/lib/python3/dist-packages/startxpy-0.6.4.post1.egg-info/PKG-INFO
+68b329da9893e34099c7d8ad5cb9c940  usr/lib/python3/dist-packages/startxpy-0.6.4.post1.egg-info/dependency_links.txt
+fb34c1a90cc361526fe54393bf926991  usr/lib/python3/dist-packages/startxpy-0.6.4.post1.egg-info/entry_points.txt
+fd47b6eb93e9ada6c73143f3b5934732  usr/lib/python3/dist-packages/startxpy-0.6.4.post1.egg-info/top_level.txt
 5fe545805b3014c2a0338a70cc7aed8f  usr/lib/python3/dist-packages/startxpy/__init__.py
 a53821d3dc4b5cfe42fdc92a67290923  usr/lib/python3/dist-packages/startxpy/assets/icons/ai.gif
 22dda75468d7e0bf09739b38dc9e3064  usr/lib/python3/dist-packages/startxpy/assets/icons/calc.gif
@@ -22,7 +22,7 @@ eab060e01a20b740d0805974d8a2d8eb  usr/lib/python3/dist-packages/startxpy/assets/
 b2636d8523ac55418d4d54282c32f39a  usr/lib/python3/dist-packages/startxpy/assets/icons/web.gif
 237b557dfdf4bdba9a140200c14043c5  usr/lib/python3/dist-packages/startxpy/assets/icons/xfe.gif
 5fe545805b3014c2a0338a70cc7aed8f  usr/lib/python3/dist-packages/startxpy/components/__init__.py
-3d323a79e68d75fd36f0162e6d3a5443  usr/lib/python3/dist-packages/startxpy/main.py
+45035f4c5ed30d47395204f027adf6c4  usr/lib/python3/dist-packages/startxpy/main.py
 af37efb2bc1c98f09beac1699b034868  usr/lib/python3/dist-packages/startxpy/mixins/__init__.py
 d41d8cd98f00b204e9800998ecf8427e  usr/lib/python3/dist-packages/startxpy/mixins/chat.py
 0e6a20a71f5d5ddf9c7d13189430d8f4  usr/lib/python3/dist-packages/startxpy/mixins/click.py
@@ -35,6 +35,6 @@ df109d6c06b20c5985afded765f5a67a  usr/lib/python3/dist-packages/startxpy/mixins/
 2714583d7ec26a8392f8161d978160b8  usr/lib/python3/dist-packages/startxpy/utils/launcher.py
 9d0e1e9faa63ce4a61638a2eccc0981a  usr/lib/python3/dist-packages/startxpy/utils/run.py
 a954ba9d79d6e3e25c68edfc0bef4f9f  usr/lib/python3/dist-packages/startxpy/window.py
-51d1fe56188b98d9c1fe823748f592d2  usr/share/doc/startxpy/changelog.Debian.gz
+b0e4a6024871a950ae7a1fbc65bfa971  usr/share/doc/startxpy/changelog.Debian.gz
 515b18a3f59f4ac54954551ca012e0c5  usr/share/doc/startxpy/copyright
 c290f685bde4aba608fb8444f6271266  usr/share/man/man1/startxpy.1.gz
