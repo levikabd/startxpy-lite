@@ -1,0 +1,33 @@
+name: Build Debian Package (with mk-build-deps)
+
+on:
+  push:
+    branches: [ "master" ]
+  # pull_request:
+  #   branches: [ "master" ]
+
+jobs:
+  build-deb:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install base tools for mk-build-deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y devscripts equivs
+
+      - name: Generate and install build-deps from debian/control
+        run: |
+          # mk-build-deps создаст временный пакет со всеми Build-Depends из debian/control
+          mk-build-deps --install --remove --root-cmd sudo --build-dep --tool 'apt-get -o Debug::pkgProblemResolver=yes'
+
+      - name: Build deb package
+        run: dpkg-buildpackage -us -uc -b
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: deb-package
+          path: ../*.deb ../*.dsc ../*.changes ../*.tar.*

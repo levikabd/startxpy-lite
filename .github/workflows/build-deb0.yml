@@ -1,0 +1,40 @@
+name: Build Debian Package
+
+on:
+  push:
+    branches: [ "master" ]  # или master, если у тебя так называется ветка
+# pull_request:
+# branches: [ "master" ]
+
+jobs:
+  build-deb:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            devscripts \
+            debhelper \
+            dh-python \
+            python3-all \
+            python3-setuptools \
+            pybuild-plugin-setuptools \
+            python3-dev
+
+      - name: Set up GPG (опционально, для подписи)
+        # Если подпись не нужна — можно пропустить
+        # run: gpg --list-keys || true
+
+      - name: Build deb package
+        run: dpkg-buildpackage -us -uc -b
+
+      - name: Upload artifacts (deb, dsc, changes, tar)
+        uses: actions/upload-artifact@v4
+        with:
+          name: deb-package
+          path: ../*.deb ../*.dsc ../*.changes ../*.tar.*
