@@ -1,4 +1,4 @@
-startxpy (0.6.5-1) UNRELEASED; urgency=medium
+startxpy (0.6.6-1) UNRELEASED; urgency=medium
 
   [ lev ]
   * Edit setting to build .deb package.
@@ -12,7 +12,10 @@ startxpy (0.6.5-1) UNRELEASED; urgency=medium
   * Edit setting to build .deb package.
   * Edit setting to build .deb package.
 
- -- Lev <levikabd@yandex.ru>  Mon, 14 Sep 2026 00:31:18 +0700
+  [ Lev Lev ]
+  * Edit settings to CL build .deb package.
+
+ -- Lev Lev <levikabd@yandex.ru>  Tue, 22 Sep 2026 23:37:21 +0700
 
 startxpy (0.6.4-1) trixie; urgency=medium
 
