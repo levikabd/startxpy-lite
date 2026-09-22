@@ -72,24 +72,7 @@ class CommandRunnerMixin:
             return
 
         dialog.destroy()  # закрываем сразу после нажатия
-
         returncode, out, err = run_command(cmd_text)
-        # try:
-        #     # shell=True позволяет использовать пайпы, подстановки и т.д.
-        #     proc = subprocess.Popen(
-        #         cmd_text,
-        #         shell=True,
-        #         stdout=subprocess.PIPE,
-        #         stderr=subprocess.PIPE,
-        #         text=True,
-        #     )
-        #     out, err = proc.communicate()
-        #     exit_code = proc.returncode
-        #
-        #     # Тут можно показать результат в статусбаре или отдельном окне
-        #     self._show_command_result(cmd_text, out, err, exit_code)
-        # except Exception as e:
-        #     self._show_error(f"Не удалось запустить команду: {e}")
 
     def _show_command_result(
         self,
@@ -130,22 +113,3 @@ class CommandRunnerMixin:
         txt.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
         returncode, out, err = run_command(cmd_text)
-        # try:
-        #     proc = subprocess.Popen(
-        #         cmd_text,
-        #         shell=True,
-        #         stdout=subprocess.PIPE,
-        #         stderr=subprocess.STDOUT,  # объединяем stderr в stdout
-        #         text=True,
-        #     )
-        #
-        #     # Читаем вывод по строкам и сразу пишем в Text
-        #     for line in proc.stdout:
-        #         txt.insert(tk.END, line)
-        #         txt.see(tk.END)
-        #         out_win.update_idletasks()
-        #
-        #     proc.wait()
-        #     txt.insert(tk.END, f"\n[Завершено, код выхода: {proc.returncode}]\n")
-        # except Exception as e:
-        #     txt.insert(tk.END, f"[Ошибка: {e}]\n")
