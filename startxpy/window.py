@@ -21,8 +21,8 @@ class MainWindow(tk.Tk, LayoutMixin, MenubarMixin, ClickMixin, StatusbarMixin, D
                 self.setup_layout()
 
                 self.setup_menu()
-                self.setup_dev_toolbar(self)
-                self.setup_run_button(self)
+                self.setup_dev_toolbar()
+                self.setup_run_button()
 
                 self.setup_statusbar()
 

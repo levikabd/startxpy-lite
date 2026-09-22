@@ -22,7 +22,7 @@ def run_command(cmd_text, shell=True):
 class CommandRunnerMixin:
     """Миксин для запуска произвольных команд через диалоговое окно."""
 
-    def setup_run_button(self, parent: tk.Widget) -> None:
+    def setup_run_button(self) -> None:
     #     # Кнопка RUN на твоей панели инструментов
     #     btn = tk.Button(parent, text="RUN", command=self._on_run_click)
     #     btn.pack(side=tk.LEFT, padx=4, pady=2)
