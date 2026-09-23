@@ -118,3 +118,4 @@ class CommandRunnerMixin:
         txt.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
         returncode, out, err = run_command(cmd_text)
+
