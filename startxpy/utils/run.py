@@ -1,6 +1,18 @@
 import tkinter as tk
 import subprocess
+import tkinter.messagebox as mb
 # from typing import Optional
+
+def _log_command_result(self, cmd, out, err, exit_code):
+    status_msg = f"Команда завершена (код: {exit_code})"
+    print("--- Command ---")
+    print(cmd)
+    if out:
+        print("STDOUT:\n", out)
+    if err:
+        print("STDERR:\n", err)
+    print("---------------")
+    return status_msg
 
 def run_command(cmd_text, shell=True):
     """Обёртка для запуска команды через subprocess."""
@@ -86,17 +98,10 @@ class CommandRunnerMixin:
         if hasattr(self, "statusbar_frame"):
             # Если у тебя есть виджет для текста статуса — используй его
             pass
-        # Или просто выведи в консоль для начала
-        print("--- Command ---")
-        print(cmd)
-        if out:
-            print("STDOUT:\n", out)
-        if err:
-            print("STDERR:\n", err)
-        print("---------------")
+
+        status_msg = self._log_command_result(cmd, out, err, exit_code)
 
     def _show_error(self, msg: str) -> None:
-        import tkinter.messagebox as mb
         mb.showerror("Ошибка", msg)
 
     def _execute_command_with_output(self, entry: tk.Entry, dialog: tk.Toplevel) -> None:
