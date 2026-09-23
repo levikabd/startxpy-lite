@@ -20,14 +20,21 @@ jobs:
 
       - name: Generate and install build-deps from debian/control
         run: |
-          # mk-build-deps создаст временный пакет со всеми Build-Depends из debian/control
           mk-build-deps --install --remove --root-cmd sudo --build-dep --tool 'apt-get -o Debug::pkgProblemResolver=yes'
 
       - name: Build deb package
         run: dpkg-buildpackage -us -uc -b
 
+      - name: Collect artifacts
+        run: cp ../*.deb ../*.dsc ../*.changes ../*.tar.* .
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: deb-package
-          path: ../*.deb ../*.dsc ../*.changes ../*.tar.*
+          path: |
+            *.deb
+            *.dsc
+            *.changes
+            *.tar.*
+
