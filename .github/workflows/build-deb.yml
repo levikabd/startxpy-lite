@@ -34,55 +34,53 @@ jobs:
           echo "source=$(dpkg-parsechangelog -S Source)"   >> "$GITHUB_OUTPUT"
           echo "version=$(dpkg-parsechangelog -S Version)" >> "$GITHUB_OUTPUT"
 
-      # ВАЖНО: копируем артефакты в текущую директорию, чтобы action-gh-release их увидел
       - name: Move artifacts to root
         working-directory: ${{ github.workspace }}
         run: |
-          # Копируем .deb, .changes, .buildinfo из родительской папки в текущую
           cp ../*.deb ../*.changes ../*.buildinfo . || true
 
-- name: Extract package metadata
-  id: pkg
-  run: |
-    pkg_version=$(dpkg-parsechangelog -S Version)
-    deb_file="startxpy_${pkg_version}_all.deb"
-    echo "pkg_version=${pkg_version}" >> $GITHUB_OUTPUT
-    echo "deb_file=${deb_file}" >> $GITHUB_OUTPUT
+      - name: Extract package metadata
+        id: pkg
+        run: |
+          pkg_version=$(dpkg-parsechangelog -S Version)
+          deb_file="startxpy_${pkg_version}_all.deb"
+          echo "pkg_version=${pkg_version}" >> "$GITHUB_OUTPUT"
+          echo "deb_file=${deb_file}" >> "$GITHUB_OUTPUT"
 
-- name: Prepare release body
-  run: |
-    # Забираем переменные из предыдущего шага
-    pkg_version="${{ steps.pkg.outputs.pkg_version }}"
-    deb_file="${{ steps.pkg.outputs.deb_file }}"
+      - name: Prepare release body
+        run: |
+          # Забираем переменные из предыдущего шага
+          pkg_version="${{ steps.pkg.outputs.pkg_version }}"
+          deb_file="${{ steps.pkg.outputs.deb_file }}"
 
-    # Переменные Actions тоже забираем в bash-переменные
-    repo="${{ github.repository }}"
-    tag="${{ github.ref_name }}"
+          # Переменные Actions тоже забираем в bash-переменные
+          repo="${{ github.repository }}"
+          tag="${{ github.ref_name }}"
 
-    cat > /tmp/release_body.md <<EOF
-# Debian-пакет startxpy v${pkg_version}
+          cat > /tmp/release_body.md <<EOF
+          # Debian-пакет startxpy v${pkg_version}
 
-Готовый `.deb` для Debian/Ubuntu.
+          Готовый \`.deb\` для Debian/Ubuntu.
 
-## Установка
+          ## Установка
 
-\`\`\`bash
-wget https://github.com/${repo}/releases/download/${tag}/${deb_file}
-sudo dpkg -i ${deb_file}
-sudo apt-get install -f
-\`\`\`
+          \`\`\`bash
+          wget https://github.com/${repo}/releases/download/${tag}/${deb_file}
+          sudo dpkg -i ${deb_file}
+          sudo apt-get install -f
+          \`\`\`
 
-## Что нового (changelog)
+          ## Что нового (changelog)
 
-$(dpkg-parsechangelog -S Changes)
-EOF
+          $(dpkg-parsechangelog -S Changes)
+          EOF
 
-- name: Create GitHub Release
-  uses: softprops/action-gh-release@v2
-  with:
-    tag_name: ${{ github.ref_name }}
-    body_path: /tmp/release_body.md
-    files: |
-      ${{ steps.pkg.outputs.deb_file }}
-      *.changes
-      *.buildinfo
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          body_path: /tmp/release_body.md
+          files: |
+            ${{ steps.pkg.outputs.deb_file }}
+            *.changes
+            *.buildinfo
