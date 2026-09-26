@@ -34,6 +34,13 @@ jobs:
           echo "source=$(dpkg-parsechangelog -S Source)"   >> "$GITHUB_OUTPUT"
           echo "version=$(dpkg-parsechangelog -S Version)" >> "$GITHUB_OUTPUT"
 
+      # ВАЖНО: копируем артефакты в текущую директорию, чтобы action-gh-release их увидел
+      - name: Move artifacts to root
+        working-directory: ${{ github.workspace }}
+        run: |
+          # Копируем .deb, .changes, .buildinfo из родительской папки в текущую
+          cp ../*.deb ../*.changes ../*.buildinfo . || true
+
       - name: Create Release and upload assets
         uses: softprops/action-gh-release@v2
         with:

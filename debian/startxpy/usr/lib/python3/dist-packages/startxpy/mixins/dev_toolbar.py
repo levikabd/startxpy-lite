@@ -3,7 +3,7 @@ import tkinter.messagebox as mb
 from startxpy.utils.launcher import launch_ide
 
 class DevToolbarMixin:
-    def setup_dev_toolbar(self, parent):
+    def setup_dev_toolbar(self):
         # Панель с кнопками (твой текущий стиль)
         # toolbar = tk.Frame(parent, relief=tk.RAISED, bd=1)
         # toolbar.pack(side=tk.TOP, fill=tk.X, padx=4, pady=4)
@@ -19,7 +19,7 @@ class DevToolbarMixin:
         # btn = self.btn_dev
 
         # Меню действий (выпадает по кнопке)
-        self.dev_menu = tk.Menu(parent, tearoff=0)
+        self.dev_menu = tk.Menu(self.btn_dev, tearoff=0)
 
         ides = [
             ("PyCharm", "pycharm"),

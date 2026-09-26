@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="startxpy",
-    version="0.6.6-1",
+    version="0.6.7-1",
     packages=find_packages(exclude=["tests"]),
     package_data={
         "startxpy": ["assets/icons/*.gif"],

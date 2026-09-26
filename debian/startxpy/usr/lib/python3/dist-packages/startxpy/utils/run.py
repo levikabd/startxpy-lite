@@ -1,11 +1,40 @@
 import tkinter as tk
 import subprocess
+import tkinter.messagebox as mb
 # from typing import Optional
+
+def _log_command_result(self, cmd, out, err, exit_code):
+    status_msg = f"Команда завершена (код: {exit_code})"
+    print("--- Command ---")
+    print(cmd)
+    if out:
+        print("STDOUT:\n", out)
+    if err:
+        print("STDERR:\n", err)
+    print("---------------")
+    return status_msg
+
+def run_command(cmd_text, shell=True):
+    """Обёртка для запуска команды через subprocess."""
+    try:
+        proc = subprocess.Popen(
+            cmd_text,
+            shell=shell,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,  # полезно добавить и stderr
+            text=True                # удобно: сразу строки, а не байты
+        )
+        stdout, stderr = proc.communicate()
+        return proc.returncode, stdout, stderr
+    except Exception as e:
+        # тут можно логировать ошибку
+        return None, None, str(e)
+
 
 class CommandRunnerMixin:
     """Миксин для запуска произвольных команд через диалоговое окно."""
 
-    def setup_run_button(self, parent: tk.Widget) -> None:
+    def setup_run_button(self) -> None:
     #     # Кнопка RUN на твоей панели инструментов
     #     btn = tk.Button(parent, text="RUN", command=self._on_run_click)
     #     btn.pack(side=tk.LEFT, padx=4, pady=2)
@@ -55,23 +84,7 @@ class CommandRunnerMixin:
             return
 
         dialog.destroy()  # закрываем сразу после нажатия
-
-        try:
-            # shell=True позволяет использовать пайпы, подстановки и т.д.
-            proc = subprocess.Popen(
-                cmd_text,
-                shell=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                text=True,
-            )
-            out, err = proc.communicate()
-            exit_code = proc.returncode
-
-            # Тут можно показать результат в статусбаре или отдельном окне
-            self._show_command_result(cmd_text, out, err, exit_code)
-        except Exception as e:
-            self._show_error(f"Не удалось запустить команду: {e}")
+        returncode, out, err = run_command(cmd_text)
 
     def _show_command_result(
         self,
@@ -85,17 +98,10 @@ class CommandRunnerMixin:
         if hasattr(self, "statusbar_frame"):
             # Если у тебя есть виджет для текста статуса — используй его
             pass
-        # Или просто выведи в консоль для начала
-        print("--- Command ---")
-        print(cmd)
-        if out:
-            print("STDOUT:\n", out)
-        if err:
-            print("STDERR:\n", err)
-        print("---------------")
+
+        status_msg = self._log_command_result(cmd, out, err, exit_code)
 
     def _show_error(self, msg: str) -> None:
-        import tkinter.messagebox as mb
         mb.showerror("Ошибка", msg)
 
     def _execute_command_with_output(self, entry: tk.Entry, dialog: tk.Toplevel) -> None:
@@ -111,22 +117,5 @@ class CommandRunnerMixin:
         txt = tk.Text(out_win, wrap="word", font=("DejaVu Sans Mono", 10))
         txt.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
-        try:
-            proc = subprocess.Popen(
-                cmd_text,
-                shell=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,  # объединяем stderr в stdout
-                text=True,
-            )
+        returncode, out, err = run_command(cmd_text)
 
-            # Читаем вывод по строкам и сразу пишем в Text
-            for line in proc.stdout:
-                txt.insert(tk.END, line)
-                txt.see(tk.END)
-                out_win.update_idletasks()
-
-            proc.wait()
-            txt.insert(tk.END, f"\n[Завершено, код выхода: {proc.returncode}]\n")
-        except Exception as e:
-            txt.insert(tk.END, f"[Ошибка: {e}]\n")
