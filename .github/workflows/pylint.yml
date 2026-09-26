@@ -4,6 +4,8 @@ on: [push]
 
 jobs:
   build:
+    if: false  # <-- эта строка отключает выполнение всего джоба
+		# Когда захочешь вернуть — просто удали эту строку.
     runs-on: ubuntu-latest
     strategy:
       matrix:
