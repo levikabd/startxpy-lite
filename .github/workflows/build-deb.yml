@@ -41,15 +41,48 @@ jobs:
           # Копируем .deb, .changes, .buildinfo из родительской папки в текущую
           cp ../*.deb ../*.changes ../*.buildinfo . || true
 
-      - name: Create Release and upload assets
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: v${{ steps.changelog.outputs.version }}
-          name: ${{ steps.changelog.outputs.source }} ${{ steps.changelog.outputs.version }}
-          body: "Debian package ${{ steps.changelog.outputs.source }} ${{ steps.changelog.outputs.version }}"
-          files: |
-            *.deb
-            *.changes
-            *.buildinfo
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+- name: Extract package metadata
+  id: pkg
+  run: |
+    pkg_version=$(dpkg-parsechangelog -S Version)
+    deb_file="startxpy_${pkg_version}_all.deb"
+    echo "pkg_version=${pkg_version}" >> $GITHUB_OUTPUT
+    echo "deb_file=${deb_file}" >> $GITHUB_OUTPUT
+
+- name: Prepare release body
+  run: |
+    # Забираем переменные из предыдущего шага
+    pkg_version="${{ steps.pkg.outputs.pkg_version }}"
+    deb_file="${{ steps.pkg.outputs.deb_file }}"
+
+    # Переменные Actions тоже забираем в bash-переменные
+    repo="${{ github.repository }}"
+    tag="${{ github.ref_name }}"
+
+    cat > /tmp/release_body.md <<EOF
+# Debian-пакет startxpy v${pkg_version}
+
+Готовый `.deb` для Debian/Ubuntu.
+
+## Установка
+
+\`\`\`bash
+wget https://github.com/${repo}/releases/download/${tag}/${deb_file}
+sudo dpkg -i ${deb_file}
+sudo apt-get install -f
+\`\`\`
+
+## Что нового (changelog)
+
+$(dpkg-parsechangelog -S Changes)
+EOF
+
+- name: Create GitHub Release
+  uses: softprops/action-gh-release@v2
+  with:
+    tag_name: ${{ github.ref_name }}
+    body_path: /tmp/release_body.md
+    files: |
+      ${{ steps.pkg.outputs.deb_file }}
+      *.changes
+      *.buildinfo
