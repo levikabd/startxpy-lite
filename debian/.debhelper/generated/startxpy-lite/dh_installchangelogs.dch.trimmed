@@ -1,4 +1,4 @@
-startxpy (0.6.6-1) UNRELEASED; urgency=medium
+startxpy-lite (0.6.6-1) UNRELEASED; urgency=medium
 
   [ lev ]
   * Edit setting to build .deb package.
@@ -17,19 +17,19 @@ startxpy (0.6.6-1) UNRELEASED; urgency=medium
 
  -- Lev Lev <levikabd@yandex.ru>  Tue, 22 Sep 2026 23:37:21 +0700
 
-startxpy (0.6.4-1) trixie; urgency=medium
+startxpy-lite (0.6.4-1) trixie; urgency=medium
 
   * Bugfix: fixed running the app
 
  -- lev <lev@comp.myhome>  Tue, 01 Sep 2026 23:55:58 +0700
 
-startxpy (0.6.3-1) trixie; urgency=medium
+startxpy-lite (0.6.3-1) trixie; urgency=medium
 
   * Bugfix: fixed the launcher.py
 
  -- lev <levikabd@yandex.ru>  Tue, 01 Sep 2026 23:32:51 +0700
 
-startxpy (0.6.2-1) trixie; urgency=medium
+startxpy-lite (0.6.2-1) trixie; urgency=medium
 
   * Remove console_scripts entry point to avoid needing a man page
   * Fix changelog date format

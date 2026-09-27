@@ -1,4 +1,4 @@
-Source: startxpy
+Source: startxpy-lite
 Section: python
 Priority: optional
 Maintainer: Lev <levikabd@yandex.ru>
@@ -15,4 +15,4 @@ Architecture: all
 Depends: ${misc:Depends}, ${python3:Depends}
 Description: IDE-like launcher/windowing framework for Python/Tkinter projects
  A small framework to launch and manage Tkinter-based IDE-like windows,
- with mixins for menubar, statusbar, taskbar, dev-toolbar, etc.
+ with mixins for statusbar, dev-toolbar, etc.

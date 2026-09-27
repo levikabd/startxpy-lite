@@ -1,5 +1,5 @@
-Package: startxpy
-Version: 0.6.6-1
+Package: startxpy-lite
+Version: 0.6.8-1
 Architecture: all
 Maintainer: Lev <levikabd@yandex.ru>
 Installed-Size: 88
@@ -8,4 +8,4 @@ Section: python
 Priority: optional
 Description: IDE-like launcher/windowing framework for Python/Tkinter projects
  A small framework to launch and manage Tkinter-based IDE-like windows,
- with mixins for menubar, statusbar, taskbar, dev-toolbar, etc.
+ with mixins for statusbar, dev-toolbar, etc.
