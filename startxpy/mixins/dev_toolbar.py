@@ -49,7 +49,7 @@ class DevToolbarMixin:
             x = self.btn_dev.winfo_rootx()
             y = self.btn_dev.winfo_rooty() + self.btn_dev.winfo_height()
             self.dev_menu.post(x, y)
-            parent.bind("<Escape>", lambda e: self.dev_menu.unpost())
+            self.bind("<Escape>", lambda e: self.dev_menu.unpost())
 
         self.btn_dev.config(command=show_menu)
         # return toolbar
