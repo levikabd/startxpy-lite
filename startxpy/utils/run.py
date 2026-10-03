@@ -27,9 +27,7 @@ def run_command(cmd_text, shell=True):
     except Exception as e:
         return None, None, str(e)
 
-
 class CommandRunnerMixin:
-
     def setup_run_button(self) -> None:
         self.btn_run.config(command=self._on_run_click)
 

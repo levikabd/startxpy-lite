@@ -5,27 +5,22 @@ import tkinter as tk
 from tkinter import ttk
 
 class MenubarMixin:
-    # def __init__(self, parent, base_dir, icons, toggle_fullscreen_from_menu, reset_size):
+
     def setup_menu(self):
         self.base_dir = Path(__file__).resolve().parent.parent.parent
         self.image_path = self.get_image_path()
         self.icons = self.load_icons()
         return self.create_widgets()
 
-
     def get_image_path(self):
-        # return os.path.join(base_dir, "assets", "icons")
         icon_path = self.base_dir / "startxpy" / "assets" / "icons"
-        # print(f"Пытаюсь загрузить: {icon_path}")
+        # print(f"Download Attempt icons: {icon_path}")
         return icon_path
 
     def load_icons(self):
         images = {}
-        # names = ["fullscreen", "doc", "mail", "settings"]  # add other
         image_files = [
-            ("ai", "ai.gif"),
             ("calc", "calc.gif"),
-            ("ded", "ded.gif"),
             ("dev", "dev.gif"),
             ("doc", "doc.gif"),
             ("exit", "exit.gif"),
@@ -34,7 +29,6 @@ class MenubarMixin:
             ("poweroff", "poweroff.gif"),
             ("run", "run.gif"),
             ("web", "web.gif"),
-            ("settings", "settings.gif"),
             ("fullscreen", "fullscreen.gif"),
             ("xfe", "xfe.gif")
         ]
@@ -45,9 +39,9 @@ class MenubarMixin:
                 try:
                     images[name] = PhotoImage(file=path)
                 except Exception as e:
-                    print(f"Ошибка загрузки {filename}: {str(e)}")
+                    print(f"Error of downloading: {filename}: {str(e)}")
             else:
-                print(f"Предупреждение: изображение {filename} не найдено")
+                print(f"Warning: the image {filename} not found!")
 
         return images
 
@@ -55,7 +49,7 @@ class MenubarMixin:
         self.toolbar = tk.Frame(self, bg='lightgray')
         self.toolbar.pack(side=tk.TOP, fill=tk.X)
         self.btn_dev = None
-        for name in ["doc", "mail", "calc", "xfe", "run", "web", "dev", "ai", "ded", "ktimer", "settings", "poweroff", "exit"]:
+        for name in ["doc", "mail", "calc", "xfe", "run", "web", "dev", "ktimer", "poweroff", "exit"]:
             if name in self.icons:
                 btn = tk.Button(
                     self.toolbar,
@@ -81,9 +75,7 @@ class MenubarMixin:
             variable=self.fullscreen_var,
             command=self.toggle_fullscreen
         )
-        check_button.image = self.icons["fullscreen"]  # Сохраняем ссылку на изображение
+        check_button.image = self.icons["fullscreen"]  # Save link to image
         check_button.pack(side=tk.LEFT, padx=2, pady=2)
         self.bind("<Escape>", self.on_escape)
-
         return self.toolbar
-

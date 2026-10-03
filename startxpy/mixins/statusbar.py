@@ -1,15 +1,10 @@
-# mixins/statusbar.py
 import tkinter as tk
-# from tkinter import ttk
 import os
-# from email.mime import image
 from tkinter import PhotoImage
 from datetime import datetime
 
 class StatusbarMixin:
     def setup_statusbar(self):
-        # Создаём статусбар (Frame) внизу окна
-        # self.statusbar_frame = ttk.Frame(self)
         self.statusbar_frame = tk.Frame(self, borderwidth=2, relief=tk.RAISED)
         self.statusbar_frame.pack(side=tk.BOTTOM, fill=tk.X)
 
@@ -21,13 +16,13 @@ class StatusbarMixin:
             try:
                 # pathOnline = PhotoImage(file=path)
                 self.status_icon = PhotoImage(file=path)
-                # print(f"Путь к файлу статуса: {path}  - OK.")
+                #print(f"Path to status icon: {path} - OK.")
             except Exception as e:
                 print(f"Ошибка загрузки {path}: {str(e)}")
         else:
             print(f"Предупреждение: изображение {path} не найдено")
 
-        # --- Левая часть: текст статуса + цвет + бордер ---
+        # --- Left part: status text + color + border ---
         self.status_label = tk.Label(
             self.statusbar_frame,
             text="Online",
@@ -44,7 +39,7 @@ class StatusbarMixin:
         )
         self.status_label.pack(side=tk.LEFT, fill=tk.X, expand=True)
 
-        # --- Правая часть: версия ---
+        # --- Right part: version ---
         # self.status_right = ttk.Label(
         #     self.statusbar_frame,
         #     text="v1.0.0",
@@ -53,9 +48,9 @@ class StatusbarMixin:
         # )
         # self.status_right.pack(side=tk.RIGHT, padx=(0, 5))
 
-        # --- Часы и дата ---
-        # Просто задаём фиксированный цвет фона вместо попытки взять его из ttk.Frame
-        # clock_bg = "#f0f0f0"  # можно поменять под свою тему
+        # --- Time and date ---
+        # We just set a fixed background color instead of trying to take it from ttk.Frame.
+        # clock_bg = "#f0f0f0"  # edit it to fit your theme
         clock_bg = "#e0f7fa"  #
         self.status_clock = tk.Label(
             self.statusbar_frame,
@@ -70,7 +65,6 @@ class StatusbarMixin:
             pady=2
         )
         self.status_clock.pack(side=tk.RIGHT)
-        # Запускаем автообновление часов
         self._update_clock()
 
     def _update_clock(self):
@@ -81,10 +75,8 @@ class StatusbarMixin:
         self.after(15000, self._update_clock)
 
     def set_status(self, message: str):
-        """Установить текст статусбара (левая часть)."""
         if hasattr(self, "status_label"):
             self.status_label.config(text=message)
 
     def clear_status(self):
-        """Очистить статус (или вернуть значение по умолчанию)."""
         self.set_status("Online")

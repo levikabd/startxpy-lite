@@ -1,3 +1,10 @@
+startxpy-lite (0.7.1-1) RELEASED; urgency=medium
+
+  [ Lev ]
+  * Cleaning up redundant code.
+
+ -- Lev Lev <levikabd@yandex.ru>  Sun, 04 Oct 2026 00:28:24 +0700
+
 startxpy-lite (0.6.9-1) RELEASED; urgency=medium
 
   [ Lev ]
