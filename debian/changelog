@@ -1,3 +1,9 @@
+startxpy-lite (0.7.3-1) RELEASED; urgency=medium
+
+  *Refactoring code. Fix function poweroff.
+
+ -- Lev Lev <levikabd@yandex.ru>  Mon, 05 Oct 2026 01:35:48 +0700
+
 startxpy-lite (0.7.1-1) RELEASED; urgency=medium
 
   [ Lev ]

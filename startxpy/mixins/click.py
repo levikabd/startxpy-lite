@@ -24,8 +24,8 @@ class ClickMixin:
             subprocess.Popen('thunderbird')
         elif button_name == "poweroff":
             # print('open poweroff')
-            subprocess.Popen('sudo /usr/bin/poweroff')
-            #subprocess.Popen('sudo poweroff')
+            #subprocess.Popen(['sudo', '/usr/bin/poweroff'])
+            self.on_poweroff()
         elif button_name == "run":
             print('open run')
             # self.run()

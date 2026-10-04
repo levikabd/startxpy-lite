@@ -5,7 +5,7 @@ on:
     branches: [ "master" ]
 
 permissions:
-  contents: write   # без этого релиз не создастся
+  contents: write   # One this realese not created
 
 jobs:
   build-deb:
@@ -43,7 +43,7 @@ jobs:
         id: pkg
         run: |
           pkg_version=$(dpkg-parsechangelog -S Version)
-          deb_file="startxpy_${pkg_version}_all.deb"
+          deb_file="startxpy-lite_${pkg_version}_all.deb"
           echo "pkg_version=${pkg_version}" >> "$GITHUB_OUTPUT"
           echo "deb_file=${deb_file}" >> "$GITHUB_OUTPUT"
 
@@ -58,7 +58,7 @@ jobs:
           tag="${{ github.ref_name }}"
 
           cat > /tmp/release_body.md <<EOF
-          # Debian-пакет startxpy v${pkg_version}
+          # Debian-пакет startxpy-lite v${pkg_version}
 
           Готовый \`.deb\` для Debian/Ubuntu.
 

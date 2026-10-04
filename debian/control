@@ -8,9 +8,10 @@ Build-Depends: debhelper-compat (= 13),
 		python3-setuptools,
     		python3-dev,
     		build-essential
+Suggests: lxsession, lxsession-logout, xfce4-session
 Standards-Version: 4.5.0
 
-Package: startxpy
+Package: startxpy-lite
 Architecture: all
 Depends: ${misc:Depends}, ${python3:Depends}
 Description: IDE-like launcher/windowing framework for Python/Tkinter projects

@@ -7,6 +7,7 @@ from startxpy.mixins.click import ClickMixin
 from startxpy.mixins.statusbar import StatusbarMixin
 from startxpy.mixins.dev_toolbar import DevToolbarMixin
 from startxpy.utils.run import CommandRunnerMixin
+from startxpy.utils.shutdown import CommandShutdownMixin
 
 class MainWindow(
     tk.Tk,
@@ -16,6 +17,7 @@ class MainWindow(
     StatusbarMixin,
     DevToolbarMixin,
     CommandRunnerMixin,
+    CommandShutdownMixin
 ):
     def __init__(self):
         super().__init__()
@@ -31,4 +33,5 @@ class MainWindow(
         self.setup_menu()
         self.setup_dev_toolbar()
         self.setup_run_button()
+        # self.setup_pwr_button()
         self.setup_statusbar()

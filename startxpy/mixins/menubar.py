@@ -58,7 +58,7 @@ class MenubarMixin:
                     text=name.capitalize(),
                     command=lambda n=name: self.button_click(n)
                 )
-                btn.image = self.icons[name]  # Сохраняем ссылку на изображение
+                btn.image = self.icons[name]  # Save link to image
                 btn.pack(side=tk.LEFT, padx=2, pady=2)
                 if name == "dev":
                     self.btn_dev = btn
