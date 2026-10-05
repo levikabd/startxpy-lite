@@ -1,0 +1,2 @@
+[console_scripts]
+startxpy-lite = startxpy.main:main

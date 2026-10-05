@@ -1,9 +1,27 @@
-startxpy-lite (0.6.6-1) UNRELEASED; urgency=medium
+startxpy-lite (0.7.3-1) RELEASED; urgency=medium
+
+  *Refactoring code. Fix function poweroff.
+
+ -- Lev Lev <levikabd@yandex.ru>  Mon, 05 Oct 2026 01:35:48 +0700
+
+startxpy-lite (0.7.1-1) RELEASED; urgency=medium
+
+  [ Lev ]
+  * Cleaning up redundant code.
+
+ -- Lev Lev <levikabd@yandex.ru>  Sun, 04 Oct 2026 00:28:24 +0700
+
+startxpy-lite (0.6.9-1) RELEASED; urgency=medium
+
+  [ Lev ]
+  * Refactoring the code of the RUN and DEV modules.
+
+
+ -- Lev <levikabd@yandex.ru>  Mon, 28 Sep 2026 00:19:42 +0700
+
+startxpy-lite (0.6.8-1) RELEASED; urgency=medium
 
   [ lev ]
-  * Edit setting to build .deb package.
-  * Edit setting to build .deb package.
-  * Edit setting to build .deb package.
   * Edit setting to build .deb package.
 
   [ Lev ]
@@ -14,6 +32,7 @@ startxpy-lite (0.6.6-1) UNRELEASED; urgency=medium
 
   [ Lev Lev ]
   * Edit settings to CL build .deb package.
+  * 
 
  -- Lev Lev <levikabd@yandex.ru>  Tue, 22 Sep 2026 23:37:21 +0700
 
