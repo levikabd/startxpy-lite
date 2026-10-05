@@ -1,22 +1,16 @@
-    __  ______   _     ___  _____  
-   // \\  ||    /\\   || \\  ||
-   \\	  ||   // \\  || //  ||
-    \\    ||  //___\\ ||\\   ||
- \\_//    || //     \\|| \\  ||  xpy
-
 <div align="center">
 <h1>STARTXPY-LITE</h1>
 </div>
 
-Starting X on linux in python
+<div align="center">Starting X on linux in python</div>
 
 * Debian-package startxpy-lite v0.7.4-1
 Готовый .deb для Debian/Ubuntu.
 
 * Установка:
 ```shell
-wget https://github.com/levikabd/startxpy-lite/releases/download/master/startxpy_*_all.deb
-sudo dpkg -i startxpy_*_all.deb
+wget https://github.com/levikabd/startxpy-lite/releases/download/master/startxpy-lite_*_all.deb
+sudo dpkg -i startxpy-lite_*_all.deb
 sudo apt-get install -f
 ```
 
@@ -55,7 +49,7 @@ Enter the following text:
 ```shell
 #!/bin/sh
 fluxbox &
-exec startxpy-lite
+exec startxpy
 ```
 
 * To develop, install the following components:
