@@ -1,9 +1,10 @@
 Package: startxpy-lite
-Version: 0.7.4-1
+Version: 0.7.4-2
 Architecture: all
 Maintainer: Lev <levikabd@yandex.ru>
-Installed-Size: 54
+Installed-Size: 80
 Depends: python3:any
+Suggests: lxsession, lxsession-logout, xfce4-session
 Section: python
 Priority: optional
 Description: IDE-like launcher/windowing framework for Python/Tkinter projects

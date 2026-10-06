@@ -3,6 +3,20 @@ setup.py
 startxpy/__init__.py
 startxpy/main.py
 startxpy/window.py
+startxpy/assets/icons/calc.gif
+startxpy/assets/icons/dev.gif
+startxpy/assets/icons/doc.gif
+startxpy/assets/icons/exit.gif
+startxpy/assets/icons/fullscreen.gif
+startxpy/assets/icons/ktimer.gif
+startxpy/assets/icons/mail.gif
+startxpy/assets/icons/online12.gif
+startxpy/assets/icons/online24.gif
+startxpy/assets/icons/poweroff.gif
+startxpy/assets/icons/run.gif
+startxpy/assets/icons/startxpy-logo-64.gif
+startxpy/assets/icons/web.gif
+startxpy/assets/icons/xfe.gif
 startxpy/components/__init__.py
 startxpy/mixins/__init__.py
 startxpy/mixins/click.py
@@ -20,3 +34,4 @@ startxpy_lite.egg-info/SOURCES.txt
 startxpy_lite.egg-info/dependency_links.txt
 startxpy_lite.egg-info/entry_points.txt
 startxpy_lite.egg-info/top_level.txt
+tests/test_main.py

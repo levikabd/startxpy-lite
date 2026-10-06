@@ -1,3 +1,9 @@
+startxpy-lite (0.7.4-2) RELEASED; urgency=medium
+
+  * Fix build settings.
+
+ -- Lev Lev <levikabd@yandex.ru>  Tue, 06 Oct 2026 23:22:05 +0700
+
 startxpy-lite (0.7.4-1) RELEASED; urgency=medium
 
   * Fix settings to build.
