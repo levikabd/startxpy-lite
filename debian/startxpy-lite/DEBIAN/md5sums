@@ -1,4 +1,4 @@
-63ebce2ac920b521f0a4269f31990a04  usr/bin/startxpy-lite
+88f66081bd6c9f3727b0c0ae55a12385  usr/bin/startxpy-lite
 d2544d543c030739ab593343db618bd3  usr/lib/python3/dist-packages/startxpy/__init__.py
 5fe545805b3014c2a0338a70cc7aed8f  usr/lib/python3/dist-packages/startxpy/components/__init__.py
 45035f4c5ed30d47395204f027adf6c4  usr/lib/python3/dist-packages/startxpy/main.py
@@ -14,10 +14,10 @@ ac991b19efe6dbb002c00e097c820a10  usr/lib/python3/dist-packages/startxpy/mixins/
 ba8c20681feeb195c4b6062ae24b598c  usr/lib/python3/dist-packages/startxpy/utils/run.py
 626be749ceb688bd37f497bf70738e37  usr/lib/python3/dist-packages/startxpy/utils/shutdown.py
 b2dd960319090f97711143497dd45327  usr/lib/python3/dist-packages/startxpy/window.py
-a2d85984683583ec831215aa9f421252  usr/lib/python3/dist-packages/startxpy_lite-0.7.3.post1.egg-info/PKG-INFO
-68b329da9893e34099c7d8ad5cb9c940  usr/lib/python3/dist-packages/startxpy_lite-0.7.3.post1.egg-info/dependency_links.txt
-02c2f5107405b4c714b4bb5d7ca5daf2  usr/lib/python3/dist-packages/startxpy_lite-0.7.3.post1.egg-info/entry_points.txt
-fd47b6eb93e9ada6c73143f3b5934732  usr/lib/python3/dist-packages/startxpy_lite-0.7.3.post1.egg-info/top_level.txt
-2d816d37bf443bb3ea58a5711ec7a272  usr/share/doc/startxpy-lite/changelog.Debian.gz
+2b27a987de2b910bfbc5ac13d2c634a9  usr/lib/python3/dist-packages/startxpy_lite-0.7.4.post1.egg-info/PKG-INFO
+68b329da9893e34099c7d8ad5cb9c940  usr/lib/python3/dist-packages/startxpy_lite-0.7.4.post1.egg-info/dependency_links.txt
+02c2f5107405b4c714b4bb5d7ca5daf2  usr/lib/python3/dist-packages/startxpy_lite-0.7.4.post1.egg-info/entry_points.txt
+fd47b6eb93e9ada6c73143f3b5934732  usr/lib/python3/dist-packages/startxpy_lite-0.7.4.post1.egg-info/top_level.txt
+a0617afc7721db6dd961b83c26183555  usr/share/doc/startxpy-lite/changelog.Debian.gz
 b43ede551cb1fa1d146ac49e5cbdf49c  usr/share/doc/startxpy-lite/copyright
 0de21960f56b6d3f58936b99a13eb774  usr/share/man/man1/startxpy-lite.1.gz
